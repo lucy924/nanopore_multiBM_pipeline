@@ -23,7 +23,7 @@ rule test_things:
     # snakemake --dag test_things | dot -Tsvg > dag.test_things.svg
     # snakemake test_things --use-conda
     input:
-        snv_csv = f"results/{SAMPLE}/snv_annotation/{SAMPLE}.raw_snv_results.csv"
+        snv_csv = f"results/{SAMPLE}/snv_annotation/{SAMPLE}.snv_results.csv"
 
 rule get_input_for_minknow:
     input:
@@ -98,8 +98,8 @@ rule snv_annotation:
         vcf_clinvar_gz_tbi = f"results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf.gz.tbi",
         vcf_all = f"results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp.vcf.gz",
     output:
-        snv_csv = f"results/{SAMPLE}/snv_annotation/{SAMPLE}.raw_snv_results.csv"
-        # snv_panel_csv = f"results/{SAMPLE}/snv_annotation/{SAMPLE}.snv_results.csv"
+        snv_csv = f"results/{SAMPLE}/snv_annotation/{SAMPLE}.raw_snv_results.csv",
+        snv_panel_csv = f"results/{SAMPLE}/snv_annotation/{SAMPLE}.snv_results.csv"
     log:
         f"logs/{SAMPLE}/{SAMPLE}.snv_annotation.log"
     script:
@@ -108,10 +108,10 @@ rule snv_annotation:
 rule sv_annotation:
     # Structural variant (SV) calling by SNPEff – identifies repeat expansions
     input:
-        panel_metadata = "config/panel_metadata.csv",
+        panel_metadata = "config/testing_panel_metadata.csv",
         vcf_sv_gz = f"results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_sv.vcf.gz",
     output:
-        sv_csv = f"results/{SAMPLE}/sv_annotation/{SAMPLE}.sv_results.csv"
+        sv_csv = f"results/{SAMPLE}/sv_annotation/{SAMPLE}.raw_sv_results.csv"
     log:
         f"logs/{SAMPLE}/{SAMPLE}.sv_annotation.log"
     script:
@@ -187,7 +187,6 @@ rule modification_calling:
         epic_probe_results = f"results/{SAMPLE}/mod_calling/{SAMPLE}.methatlas.csv",
         panel_mod_results = f"results/{SAMPLE}/mod_calling/{SAMPLE}.mod_results.csv",
         panel_rawmod_results = f"results/{SAMPLE}/mod_calling/{SAMPLE}.rawmod_results.csv"
-        
     log:
         f"logs/{SAMPLE}/{SAMPLE}.modification_calling.log"
     script:
@@ -297,6 +296,7 @@ rule combine_panel_results:
     input:
         snv_csv = f"results/{SAMPLE}/snv_annotation/{SAMPLE}.snv_results.csv",
         sv_csv = f"results/{SAMPLE}/sv_annotation/{SAMPLE}.sv_results.csv",
+        panel_mod_results = f"results/{SAMPLE}/mod_calling/{SAMPLE}.mod_results.csv",
         panel_mod_results = f"results/{SAMPLE}/mod_calling/{SAMPLE}.mod_results.csv"
     output:
         combined_panel_results = f"results/{SAMPLE}/{SAMPLE}.all_panel_results.csv"

@@ -61,6 +61,7 @@ panel_metadata_fp = snakemake.input['panel_metadata']
 vcf_clinvar_fp = snakemake.input['vcf_clinvar_gz']
 vcf_all_fp = snakemake.input['vcf_all']
 snp_output = snakemake.output['snv_csv']
+snp_preclin_output = snakemake.output['snv_panel_csv']
 
 log = open(snakemake.log[0], 'w')
 # ------------------------------------------------ #
@@ -201,5 +202,18 @@ merged_df = pd.merge(variants_metadata_df_snps, info_df, on='ID', how='left')
 
 # Output snp df to csv
 merged_df.to_csv(snp_output, index = False)
+
+# Get preclin_panel output
+preclin_stage_panel_result_header = ["ID", "Scoring Type", "Biomarker Type", "Result Options", "Result"]
+preclin_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
+# Set the dtypes for the columns
+preclin_panel_df = preclin_panel_df.astype(str)
+
+# Only get panel id with stuff in genotype result
+only_genotypes = merged_df[pd.notna(merged_df['Genotype'])]
+for i, row in only_genotypes.iterrows():
+    preclin_panel_df.loc[i] = [row['ID'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], row['Genotype']]
+
+preclin_panel_df.to_csv(snp_preclin_output, index = False)
 
 log.close()
