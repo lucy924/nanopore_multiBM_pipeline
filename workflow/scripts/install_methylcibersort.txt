@@ -1,0 +1,24 @@
+# The console when installing MethylCIBERSORT
+
+(base) TheGreatHall:immune_infiltrate lucy$ cd MethylCIBERSORT_Release
+(base) TheGreatHall:MethylCIBERSORT_Release lucy$ ls
+MethylCIBERSORT_0.2.0.tar.gz    MethylCIBERSORT_ReadMe.html
+(base) TheGreatHall:MethylCIBERSORT_Release lucy$ R CMD INSTALL MethylCIBERSORT_0.2.0.tar.gz
+* installing to library ‘/Library/Frameworks/R.framework/Versions/4.2/Resources/library’
+* installing *source* package ‘MethylCIBERSORT’ ...
+** using staged installation
+** R
+** data
+*** moving datasets to lazyload DB
+** byte-compile and prepare package for lazy loading
+Warning in library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘RPMM’
+Note: possible error in 'correlate.extended(mvp.tab, ': unused argument (method.fdr = method.fdr) 
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (MethylCIBERSORT)
+(base) TheGreatHall:MethylCIBERSORT_Release lucy$ 

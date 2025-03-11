@@ -1,0 +1,17 @@
+*.svg
+*.fasta*
+*.fa*
+*.fna*
+*.gz*
+*.zip
+**/__pycache__
+.snakemake
+meth_atlas
+resources/IlluminaEPIC_genomic_locations_hg38.csv
+resources/hg38_no_alt.chrom_sizes
+results
+results_debug
+debug
+logs
+config/panel_metadata.csv
+config/panel_metadata.scores.csv

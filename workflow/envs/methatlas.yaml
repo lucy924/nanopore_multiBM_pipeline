@@ -1,0 +1,10 @@
+name: methatlas_venv
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - conda =24.7.1
+  - numpy
+  - pandas
+  - scipy
+  - matplotlib

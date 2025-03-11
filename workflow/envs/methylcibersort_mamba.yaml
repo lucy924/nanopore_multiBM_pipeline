@@ -1,0 +1,15 @@
+name: mCS_venv
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - r-base=3.6.3
+  - r-quadprog
+  - r-matrixstats
+  - r-nmf
+  - r-doparallel
+  - r-glmnet
+  - r-caret
+  - bioconductor-minfi
+  - bioconductor-multtest

@@ -1,0 +1,12 @@
+name: general
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - numpy =2.2.2
+  - pandas =2.2.2
+  - nextflow =23.04.4
+  - samtools =1.21
+  - pip
+  - pip:
+    - git+https://github.com/brentp/cyvcf2.git@v0.31.1
