@@ -5,7 +5,7 @@ min_genome_coverage: 0.5
 max_genome_coverage: 2.0
 threads: 24
 # sample: 'test2'
-sample: 'test3'
+sample: 'test4'
 # bam_pass_directory: "/external/data/lucy/20241107-BiomarkerProject/all_passed_bams"
 # bam_pass_directory: "/external/data/lucy/20241107-BiomarkerProject/merged_bams/passed_reads_part1.bam"
 bam_pass_directory: "/external/data/lucy/20241107-BiomarkerProject/merged_bams"

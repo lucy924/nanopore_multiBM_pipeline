@@ -1,0 +1,14 @@
+ID,Marker name,Scoring Type,Biomarker Type,Result Options,Result
+401,LMR,continuous,immune_ratio,0.0-10.0,
+402,NLR,continuous,immune_ratio,0.0-10.0,0.018352905242468204
+403,monocyte_inf,continuous,immune_inf,0.0-1.0,
+405,Bcell_inf,continuous,immune_inf,0.0-1.0,0.0177456741447506
+406,CD4_inf,continuous,immune_inf,0.0-1.0,0.0
+407,NK_inf,continuous,immune_inf,0.0-1.0,0.0256672410471266
+408,CD8_inf,continuous,immune_inf,0.0-1.0,0.0121458982222691
+409,Treg_inf,continuous,immune_inf,0.0-1.0,0.144382985705877
+410,Neutrophil_inf,continuous,immune_inf,0.0-1.0,0.0036695128932584
+411,Endothelial_inf,continuous,immune_inf,0.0-1.0,0.0263005364546374
+412,Eosinophil_inf,continuous,immune_inf,0.0-1.0,0.0311375174868231
+413,Fibroblast_inf,continuous,immune_inf,0.0-1.0,0.0234228972210477
+414,Cancer_inf,continuous,immune_inf,0.0-1.0,0.71552773682421

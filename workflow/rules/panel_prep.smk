@@ -25,7 +25,7 @@ rule make_panel_bed:
     log:
         "logs/make_minknow_input/make_panel_bed.log",
     script:
-        "scripts/make_panel_bed.py"
+        "../scripts/make_panel_bed.py"
 
 rule run_make_adaptive_ref:
     input:
@@ -42,7 +42,7 @@ rule run_make_adaptive_ref:
     log:
         f"logs/make_minknow_input/all.{config['flanking_bp']}.log"
     script:
-        "scripts/make_adaptive_ref.sh"
+        "../scripts/make_adaptive_ref.sh"
 
 rule check_coverage:
     input:
@@ -57,4 +57,4 @@ rule check_coverage:
     log:
         "logs/make_minknow_input/check_criteria.log"
     script:
-        "scripts/calculate_coverage.py"
+        "../scripts/calculate_coverage.py"

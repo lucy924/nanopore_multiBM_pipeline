@@ -1,0 +1,22 @@
+ID,Marker name,Scoring Type,Biomarker Type,Result Options,Result
+004,NOS3,allelic,snp,T|T/T|A/T|G/A|A/A|G/G|G,G|G
+005,NOS3,allelic,snp,C|C/C|T/T|T,T|C
+025,IL1B,allelic,snp,G|G/G|A/A|A,A|G
+026,IL1RAP,allelic,snp,G|G/G|A/A|A,G|A
+027,IL1RAP,allelic,snp,G|G/G|C/C|C,C|G
+028,IL1RAP,allelic,snp,T|T/T|A/T|C/A|A/A|C/C|C,C|T
+029,IL1RAP,allelic,snp,G|G/G|A/A|A,G|A
+030,IL18R1,allelic,snp,C|C/C|T/T|T,T|T
+031,IL18R1,allelic,snp,G|G/G|C/C|C,G|C
+032,IL18R1,allelic,snp,C|C/C|A/A|A,C|C
+033,IL18R1,allelic,snp,C|C/C|T/T|T,T|T
+035,IL18R1,allelic,snp,G|G/G|A/A|A,A|A
+036,IL18R1,allelic,snp,G|G/G|A/A|A,G|G
+037,IL18R1,allelic,snp,C|C/C|T/T|T,T|T
+038,IL18R1,allelic,snp,G|G/G|A/A|A,G|G
+048,XPA,allelic,snp,G|G/G|A/A|A,C|C
+056,ERCC2,allelic,snp,G|G/G|A/A|A,T|C
+057,ERCC6,allelic,snp,G|G/G|A/A|A,T|C
+060,NFKB1,allelic,snp,,CATTG|C
+061,CASP9,allelic,snp,G|G/G|A/A|A,T|T
+064,XRCC1,allelic,snp,G|G/G|A/A|A,C|C

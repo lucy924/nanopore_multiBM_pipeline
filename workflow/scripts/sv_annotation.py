@@ -7,9 +7,25 @@
 ################################################################################
 
 
+import os
+if os.getenv("SNAKEMAKE_DEBUG"):
+    class FakeSnakemake:
+        SAMPLE = "test3"
+        PREFIX = "/external/analyses/lucy/nanopore_multiBM_pipeline"
+        input = {
+            'panel_metadata': f"{PREFIX}/config/testing_panel_metadata.csv",
+            'vcf_sv_gz': f"{PREFIX}/results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_sv.vcf.gz",
+            }
+        output = {
+            'sv_csv': f"{PREFIX}/results_debug/{SAMPLE}/sv_annotation/{SAMPLE}.raw_sv_results.csv"
+            }
+        log = [f"{PREFIX}/results_debug/{SAMPLE}.sv_annotation.log"]
+
+    snakemake = FakeSnakemake()
+
 import pandas as pd
 from cyvcf2 import VCF
-from snakemake.script import snakemake
+# from snakemake.script import snakemake
 from shared_functions import variant_prep, get_location_string, get_annotation_dict, get_annotation_info_dict, get_snp_by_genomic_location, variant_dict_columns_to_add
 
 # -------------------------------------------------------------------------- #
@@ -24,6 +40,10 @@ log = open(snakemake.log[0], 'w')
 variants_metadata_df_svs = variant_prep(panel_metadata_fp, variant_type = 'sv')
 
 vcf_sv = VCF(vcf_sv_fp)
+
+# for entry in vcf_sv:
+    # print(entry)
+
 
 info_to_add_to_metadata = dict()
 num_variants_found_total = 0
