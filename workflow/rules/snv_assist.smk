@@ -2,6 +2,7 @@
 SAMPLE = config['sample']
 cores = config.get("max_cores", 16)  # Default to 16 if not set
 
+
 rule bgzip_clinvar_vcf:
     input:
         vcf_clinvar = f"results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf"
@@ -10,7 +11,8 @@ rule bgzip_clinvar_vcf:
     benchmark:
         f"logs/{SAMPLE}/{SAMPLE}.benchmark.bgzip_clinvar_vcf.tsv"
     shell:
-        "bgzip {input}"
+        "bgzip -k {input}"
+
 
 rule tabix_clinvar_vcf_gz:
     input:
