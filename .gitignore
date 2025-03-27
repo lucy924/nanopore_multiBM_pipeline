@@ -4,6 +4,10 @@
 *.fna*
 *.gz*
 *.zip
+**/*.bam
+**/*.bam.bai
+**/*.nextflow*
+**/work
 **/__pycache__
 .snakemake
 meth_atlas
@@ -21,3 +25,12 @@ config/panel_metadata.scores.csv
 results/test3/mod_calling/test3.wf_mods.all.dss_format.tsv
 results/test3/mod_calling/test3.post_beta.csv
 results/test3/mod_calling/test3.pre_beta.csv
+results/BCG_on_NMIBC/test5/mod_calling/test5.wf_mods.all.bedmethyl.bed
+results/BCG_on_NMIBC/test5/mod_calling/test5.wf_mods.all.dss_format.tsv
+results/BCG_on_NMIBC/test5/mod_calling/test5.post_beta.csv
+results/BCG_on_NMIBC/test5/mod_calling/test5.pre_beta.csv
+results/BCG_on_NMIBC/test5/wf-humvar/.nextflow
+results/BCG_on_NMIBC/test5/wf-humvar/execution
+results/BCG_on_NMIBC/test5/wf-humvar/work
+results/BCG_on_NMIBC/test5/wf-humvar/OPTIONAL_FILE
+results/BCG_on_NMIBC/test5/wf-humvar/test5.wf_sv.snf
