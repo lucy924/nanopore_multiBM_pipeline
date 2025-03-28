@@ -73,7 +73,7 @@ BIOMARKER_NAME = "Biomarker name"
 RESULT_OPTIONS = "Result Options"
 SCORING_TYPE = "Scoring Type"
 
-preclin_stage_panel_result_header = ["ID", "Marker name", "Scoring Type", "Biomarker Type", "Result Options", "Result"]
+preclin_stage_panel_result_header = ["ID", BIOMARKER_NAME, SCORING_TYPE, "Biomarker Type", RESULT_OPTIONS, "Result"]
 
 variant_dict_columns_to_add = ['ClinVar', 'Significance (ClinVar)', 'Consequence (Clinvar)', 'Reference Allele', 'Variant Allele', 'Genotype', 'HGVS.c', 'HGVS.p', 'SV Length', 'SV Type']
 

@@ -2,8 +2,12 @@
 *.fasta*
 *.fa*
 *.fna*
+*.bam*
 *.gz*
 *.zip
+**/*.post_beta.csv
+**/*.pre_beta.csv
+*.snf
 **/__pycache__
 .snakemake
 meth_atlas
@@ -21,3 +25,7 @@ config/panel_metadata.scores.csv
 results/test3/mod_calling/test3.wf_mods.all.dss_format.tsv
 results/test3/mod_calling/test3.post_beta.csv
 results/test3/mod_calling/test3.pre_beta.csv
+**/*.dss_format.tsv
+.nextflow
+**/.nextflow.log*
+**/work
