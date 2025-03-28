@@ -8,7 +8,7 @@
 
 
 import pandas as pd
-from snakemake.script import snakemake
+from snakemake.script import snakemake  # type: ignore
 
 
 def filter_dss_to_x_depth(dss_df, depth = 30):

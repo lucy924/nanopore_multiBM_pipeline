@@ -67,7 +67,11 @@ CHROM_LENGTHS = {
     "chrM": 16569
 }
 
-VARIANT_TYPE = "Variant Type (snp, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, immune_inf, microsatellite, demographic, clinicopathology)"
+# VARIANT_TYPE = "Variant Type (snp, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, immune_inf, microsatellite, demographic, clinicopathology)"
+VARIANT_TYPE = "Biomarker Type (snv, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, immune_inf, microsatellite, demographic, clinicopathology)"
+BIOMARKER_NAME = "Biomarker name"
+RESULT_OPTIONS = "Result Options"
+SCORING_TYPE = "Scoring Type"
 
 preclin_stage_panel_result_header = ["ID", "Marker name", "Scoring Type", "Biomarker Type", "Result Options", "Result"]
 
@@ -76,19 +80,19 @@ variant_dict_columns_to_add = ['ClinVar', 'Significance (ClinVar)', 'Consequence
 def filter_to_variant_type(panel_metadata_df, variant_type):
     """
     Filter rows based on Variant type entry.
-    Variant type must be one of: snp, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, microsatellite, demographic, clinicopathology
+    Variant type must be one of: snv, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, microsatellite, demographic, clinicopathology
     """
     # Sanity check:
-    variant_types = ["snp", "sv", "mod", "area_mutations", "expression", "exp_ratio", "immune_ratio", "immune_inf", "microsatellite", "demographic", "clinicopathology"]
+    variant_types = ["snv", "sv", "mod", "area_mutations", "expression", "exp_ratio", "immune_ratio", "immune_inf", "microsatellite", "demographic", "clinicopathology"]
     if variant_type not in variant_types:
-        raise ValueError("variant_type must be one of: snp, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, microsatellite, demographic, clinicopathology")
+        raise ValueError("variant_type must be one of: snv, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, microsatellite, demographic, clinicopathology")
     
     panel_metadata_df = panel_metadata_df[
         (panel_metadata_df[VARIANT_TYPE] == variant_type)
     ]
     
     #TODO - for my sanity during development
-    # if variant_type == 'snp':
+    # if variant_type == 'snv':
     #     panel_metadata_df = panel_metadata_df[
     #         (panel_metadata_df["length"] == '1')
     #     ]  # will need to deal with these caveats down the track

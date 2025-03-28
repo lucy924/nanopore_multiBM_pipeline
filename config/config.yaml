@@ -1,11 +1,11 @@
 max_cores: 26
-panel_metadata: "config/testing_panel_metadata.csv"
+panel_metadata: "config/panel_metadata.clean.csv"
 flanking_bp: 2000
 min_genome_coverage: 0.5
 max_genome_coverage: 2.0
 threads: 24
 # sample: 'test2'
-sample: 'test4'
+sample: 'test6'  # do trad-cpg stuff 
 # bam_pass_directory: "/external/data/lucy/20241107-BiomarkerProject/all_passed_bams"
 # bam_pass_directory: "/external/data/lucy/20241107-BiomarkerProject/merged_bams/passed_reads_part1.bam"
 bam_pass_directory: "/external/data/lucy/20241107-BiomarkerProject/merged_bams"
@@ -24,3 +24,6 @@ cibersortx:
 # early_pod5s/basecalling --config         dna_r10.4.1_e8.2_400bps_modbases_5hmc_5mc_cg_hac.cfg
 
 # test3 clair3 model Autoselected Clair3 model: r1041_e82_400bps_hac_v410
+
+# snakemake --dag run_sample_panel_for_BM_classifier | dot -Tsvg > dag.run_sample_panel_for_BM_classifier.test6.svg
+# snakemake run_wf_humvar

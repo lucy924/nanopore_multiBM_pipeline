@@ -7,7 +7,7 @@
 ################################################################################
 
 import pandas as pd
-from snakemake.script import snakemake
+from snakemake.script import snakemake  # type: ignore
 
 # Previous shell code
 # awk -v OFS='\t' 'BEGIN{print "chr","pos","N","X"}{print $1,$2,($12+$13),$13}' ${snakemake_input[0]} > ${snakemake_output[0]}
@@ -23,8 +23,8 @@ header = ["chrom", "start", "end", "mod base code", "score", "strand", "start po
 with open(snakemake.input[0], 'r') as fb:
     bed_df = pd.read_csv(fb, sep = '\t', names=header)
 
-bed_df1 = bed_df[bed_df['mod base code'] == 'm']
-dss_df = bed_df1.copy()[['chrom', 'start', 'N valid cov', 'N mod']]
+# bed_df1 = bed_df[bed_df['mod base code'] == 'm']
+dss_df = bed_df.copy()[['chrom', 'start', 'N valid cov', 'N mod']]
 dss_df.rename({'chrom':'chr', 'start': 'pos', 'N valid cov': "N", 'N mod': "X"}, axis=1, inplace=True)
 
 dss_df.to_csv(snakemake.output[0], sep = '\t', index=False)

@@ -11,8 +11,8 @@ import os
 import json
 import numpy as np
 import pandas as pd
-from snakemake.script import snakemake
-from shared_functions import VARIANT_TYPE, CHROMOSOMES, preclin_stage_panel_result_header, variant_prep
+from snakemake.script import snakemake  # type: ignore
+from shared_functions import VARIANT_TYPE, CHROMOSOMES, preclin_stage_panel_result_header, variant_prep, BIOMARKER_NAME, RESULT_OPTIONS, SCORING_TYPE
 
 
 def export_for_methatlas(df):
@@ -296,9 +296,9 @@ def format_results_for_preclin_output(results_df):
             raise ValueError(f"code not ready for DNA methylation region = {panel_entry['DNA methylation region']} or variant type = {panel_entry[VARIANT_TYPE]}")
         
         if panel_entry[VARIANT_TYPE] != 'exp_ratio':
-            preclin_panel_df.loc[i] = [panel_id, panel_entry['Gene name'], panel_entry['Scoring Type'], biomarker_type, panel_entry['Variant'], result] 
+            preclin_panel_df.loc[i] = [panel_id, panel_entry[BIOMARKER_NAME], panel_entry[SCORING_TYPE], biomarker_type, panel_entry[RESULT_OPTIONS], result] 
         
-        preclin_panel_rawmod_df.loc[i] = [panel_id, panel_entry['Gene name'], panel_entry['Scoring Type'], biomarker_type, panel_entry['Variant'], result, meth, total] 
+        preclin_panel_rawmod_df.loc[i] = [panel_id, panel_entry[BIOMARKER_NAME], panel_entry[SCORING_TYPE], biomarker_type, panel_entry[RESULT_OPTIONS], result, meth, total] 
         
     return preclin_panel_df, preclin_panel_rawmod_df
 
@@ -314,7 +314,7 @@ def add_exp_ratio_to_results(preclin_panel_df, preclin_panel_rawmod_df):
         data_entry = data.loc[panel_id].to_dict()
         
         ratio_name = panel_input_exp_ratio_idxd.loc[panel_id]['Expression Ratio Components']
-        gene_name = panel_input_exp_ratio_idxd.loc[panel_id]['Gene name']
+        gene_name = panel_input_exp_ratio_idxd.loc[panel_id][BIOMARKER_NAME]
         region_result = data_entry['Result']
         if ratio_name not in exp_ratio_data.keys():
             exp_ratio_data[ratio_name] = {

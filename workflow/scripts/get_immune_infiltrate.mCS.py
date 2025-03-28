@@ -11,8 +11,8 @@ import os
 import json
 import numpy as np
 import pandas as pd
-from snakemake.script import snakemake
-from shared_functions import VARIANT_TYPE, preclin_stage_panel_result_header, variant_prep
+from snakemake.script import snakemake  # type: ignore
+from shared_functions import VARIANT_TYPE, preclin_stage_panel_result_header, variant_prep, BIOMARKER_NAME, SCORING_TYPE, RESULT_OPTIONS
 
 lymphocytes = ["CD19", "CD4_Eff",
                "CD56", "CD8", "Treg", ]
@@ -93,7 +93,7 @@ log = open(snakemake.log[0], 'w')
 
 # Load docker CS output
 with open(deconv_fp, "r") as fd:
-    deconv_df = pd.read_csv(fd)
+    deconv_df = pd.read_csv(fd, sep='\t')
 
 sample_row_id = 0
 
@@ -113,20 +113,20 @@ Cancer = deconv_df["Cancer"][sample_row_id]
 LMR_ratio = get_LMR(deconv_df, log)
 NLR_ratio = get_NLR(deconv_df, log)
 
-log.write(f'Proportion of infiltrating Monocytes is {Monocytes}')
-log.write(f'Proportion of infiltrating B-cells is {Bcells}')
-log.write(f'Proportion of infiltrating CD4+ T-cells is {CD4_Tcells}')
-log.write(f'Proportion of infiltrating CD8+ T-cells is {NK_cells}')
-log.write(f'Proportion of infiltrating NK cells is {CD8_Tcells}')
-log.write(f'Proportion of infiltrating Neutrophils is {Neutrophils}')
-log.write(f'Proportion of infiltrating Tregs is {Tregs}')
-log.write(f'Proportion of infiltrating Endothelial cells is {Endothelial}')
-log.write(f'Proportion of infiltrating Eosinophils is {Eosinophils}')
-log.write(f'Proportion of infiltrating Fibroblasts is {Fibroblasts}')
-log.write(f'Proportion of Cancer cells is {Cancer}')
+log.write(f'Proportion of infiltrating Monocytes is {Monocytes}\n')
+log.write(f'Proportion of infiltrating B-cells is {Bcells}\n')
+log.write(f'Proportion of infiltrating CD4+ T-cells is {CD4_Tcells}\n')
+log.write(f'Proportion of infiltrating CD8+ T-cells is {NK_cells}\n')
+log.write(f'Proportion of infiltrating NK cells is {CD8_Tcells}\n')
+log.write(f'Proportion of infiltrating Neutrophils is {Neutrophils}\n')
+log.write(f'Proportion of infiltrating Tregs is {Tregs}\n')
+log.write(f'Proportion of infiltrating Endothelial cells is {Endothelial}\n')
+log.write(f'Proportion of infiltrating Eosinophils is {Eosinophils}\n')
+log.write(f'Proportion of infiltrating Fibroblasts is {Fibroblasts}\n')
+log.write(f'Proportion of Cancer cells is {Cancer}\n')
 log.write(f'')
-log.write(f'Lymphocyte to Monocyte ratio is: {LMR_ratio}')
-log.write(f'Neutrophil to Lymphocyte ratio is {NLR_ratio}')
+log.write(f'Lymphocyte to Monocyte ratio is: {LMR_ratio}\n')
+log.write(f'Neutrophil to Lymphocyte ratio is {NLR_ratio}\n')
 
 # Load panel info
 panel_data_ratio = variant_prep(snakemake.input["panel_metadata"], 'immune_ratio')
@@ -136,43 +136,43 @@ panel_data_infiltrate = variant_prep(snakemake.input["panel_metadata"], 'immune_
 preclin_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
 
 for i, row in panel_data_ratio.iterrows():
-    if row['Gene name'] == "LMR":
+    if row[BIOMARKER_NAME] == "LMR":
         result = LMR_ratio
-    elif row['Gene name'] == 'NLR':
+    elif row[BIOMARKER_NAME] == 'NLR':
         result = NLR_ratio
     else:
         result = np.nan
         
-    preclin_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], result]  
+    preclin_panel_df.loc[i] = [row['ID'], row[BIOMARKER_NAME], row[SCORING_TYPE], row[VARIANT_TYPE], row[RESULT_OPTIONS], result]  
     
 for i, row in panel_data_infiltrate.iterrows():
     
-    if row['Gene name'] == 'Monocyte_inf':
+    if row[BIOMARKER_NAME] == 'Monocyte_inf':
         result = Monocytes
-    elif row['Gene name'] == 'Bcell_inf':
+    elif row[BIOMARKER_NAME] == 'Bcell_inf':
         result = Bcells
-    elif row['Gene name'] == 'CD4_inf':
+    elif row[BIOMARKER_NAME] == 'CD4_inf':
         result = CD4_Tcells
-    elif row['Gene name'] == 'NK_inf':
+    elif row[BIOMARKER_NAME] == 'NK_inf':
         result = NK_cells
-    elif row['Gene name'] == 'CD8_inf':
+    elif row[BIOMARKER_NAME] == 'CD8_inf':
         result = CD8_Tcells
-    elif row['Gene name'] == 'Treg_inf':
+    elif row[BIOMARKER_NAME] == 'Treg_inf':
         result = Tregs
-    elif row['Gene name'] == 'Neutrophil_inf':
+    elif row[BIOMARKER_NAME] == 'Neutrophil_inf':
         result = Neutrophils
-    elif row['Gene name'] == 'Endothelial_inf':
+    elif row[BIOMARKER_NAME] == 'Endothelial_inf':
         result = Endothelial
-    elif row['Gene name'] == 'Eosinophil_inf':
+    elif row[BIOMARKER_NAME] == 'Eosinophil_inf':
         result = Eosinophils
-    elif row['Gene name'] == 'Fibroblast_inf':
+    elif row[BIOMARKER_NAME] == 'Fibroblast_inf':
         result = Fibroblasts
-    elif row['Gene name'] == 'Cancer_inf':
+    elif row[BIOMARKER_NAME] == 'Cancer_inf':
         result = Cancer
     else:
         result = np.nan
         
-    preclin_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], result]  
+    preclin_panel_df.loc[i] = [row['ID'], row[BIOMARKER_NAME], row[SCORING_TYPE], row[VARIANT_TYPE], row[RESULT_OPTIONS], result]  
 
 # save preclin panel
 preclin_panel_df.to_csv(immune_results_fp, index=False)

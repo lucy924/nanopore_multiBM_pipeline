@@ -1,0 +1,8 @@
+ID,Marker name,Scoring Type,Biomarker Type,Result Options,Result
+009,CHST11,continuous,mod - promoter region,0.0-1.0,0.1481925304573597
+010,KLF8,continuous,mod - promoter region,0.0-1.0,0.2707460184409053
+011,GPR158,continuous,mod - promoter region,0.0-1.0,0.29196032367528063
+012,C12orf42,continuous,mod - promoter region,0.0-1.0,0.2612145254806225
+013,WDR44,continuous,mod - promoter region,0.0-1.0,0.7494252873563219
+014,FLT1,continuous,mod - promoter region,0.0-1.0,0.07576601671309192
+022,PMF1,continuous,mod - promoter region,0.0-1.0,0.7418496340652029

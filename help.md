@@ -117,8 +117,10 @@ Installing methylcibersort
 had to open an R console to install  
 install.packages("quadprog")  
 
-Cibersortx docker token: 
-New token: 62c6ce7d617349ca44a7ee8efb7df65c, valid until 2025-08-18 11:23:15
+Cibersortx docker token:  
+New token: 62c6ce7d617349ca44a7ee8efb7df65c, valid until 2025-08-18 11:23:15  
+See /home/dejlu879/ProjectProtocol/cibersort/README_CIBERSORTxFractions.txt
+Image id: sha256:86f8febdbe17a37f3494aaf89f845902271c2f4a3981b9e158ceba5f242dd9c9
 
 
 ignoring hmC for now (not integrated into mC, just removed from analysis altogether).  

@@ -32,6 +32,7 @@ nextflow run epi2me-labs/wf-human-variation \
     --override_basecaller_cfg "${BASECALLER}"\
     --output_gene_summary \
     --output_xam_fmt bam \
+    --modkit_args "--preset traditional" \
     --bam_min_coverage "${BAM_MIN_COV}" \
     --threads "${THREADS}" \
     --ubam_map_threads "${THREADS}" \

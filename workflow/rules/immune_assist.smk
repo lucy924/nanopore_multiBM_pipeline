@@ -28,15 +28,23 @@ rule run_methylCS:
 
 
 rule run_CIBERSORTX:
+    # shell command was: ("cp {input.standin} {output.cibersortx_output}")
     input:
         cibersort_mix_matrix_upload_file = f"results/{SAMPLE}/methylCS/{SAMPLE}.CS_mix_matrix.txt",
         cibersort_bladder_ref_upload_file = f"results/{SAMPLE}/methylCS/{SAMPLE}.CS_bladder_ref.txt",
         standin = "resources/test3.CS_bladder_ref.csv"
     output:
-        cibersortx_output = f"results/{SAMPLE}/methylCS/CIBERSORTx_{SAMPLE}_Results.csv"
+        cibersortx_output = f"results/{SAMPLE}/methylCS/CIBERSORTx_{SAMPLE}_Results.txt"
     params:
         username = config["cibersortx"]["username"],
-        token = config["cibersortx"]["token"]
+        token = config["cibersortx"]["token"],
+        dir_path = os.path.abspath(f"results/{SAMPLE}/methylCS"),
+        sample_name = SAMPLE,
+        mixture = f"{SAMPLE}.CS_mix_matrix.txt",
+        sigmatrix = f"{SAMPLE}.CS_bladder_ref.txt",
+        permutations = 1  # TODO: update
     shell:
-        ("cp {input.standin} {output.cibersortx_output}")
-
+        """
+        cd {params.dir_path}
+        docker run -v {params.dir_path}:/src/data -v {params.dir_path}:/src/outdir cibersortx/fractions --username {params.username}  --token {params.token} --mixture {params.mixture} --sigmatrix {params.sigmatrix} --label {params.sample_name} --perm {params.permutations} --QN FALSE --verbose TRUE
+        """

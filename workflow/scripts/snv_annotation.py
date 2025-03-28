@@ -27,9 +27,9 @@ if os.getenv("SNAKEMAKE_DEBUG"):
     
 from warnings import warn
 import pandas as pd
-from cyvcf2 import VCF
+from cyvcf2 import VCF  # type: ignore
 # from snakemake.script import snakemake
-from shared_functions import variant_prep, get_location_string, get_annotation_dict, get_annotation_info_dict, add_result, get_snp_by_genomic_location, variant_dict_columns_to_add, VARIANT_TYPE,preclin_stage_panel_result_header
+from shared_functions import variant_prep, get_location_string, get_annotation_dict, get_annotation_info_dict, add_result, get_snp_by_genomic_location, variant_dict_columns_to_add, VARIANT_TYPE,preclin_stage_panel_result_header, BIOMARKER_NAME, RESULT_OPTIONS
 
 
 def get_snp_by_RS_number(variants_metadata_df_sub, variant, info_dict, annotation_dict, row_data, entry_found, log, clinvar = False):
@@ -66,7 +66,7 @@ snp_preclin_output = snakemake.output['snv_panel_csv']
 
 log = open(snakemake.log[0], 'w')
 # ------------------------------------------------ #
-variants_metadata_df_snps = variant_prep(panel_metadata_fp, 'snp')
+variants_metadata_df_snps = variant_prep(panel_metadata_fp, 'snv')
 
 vcf_clinvar = VCF(vcf_clinvar_fp)
 vcf_all = VCF(vcf_all_fp)
@@ -94,7 +94,7 @@ for i, vcf in enumerate(vcfs):
         else:
             entry_found = False
         
-        log.write(f"looking for panel target {target_ID} of snp metadata\n")
+        log.write(f"looking for panel target {target_ID} of snv metadata\n")
         
         if target_ID not in info_to_add_to_metadata.keys():
             info_to_add_to_metadata[target_ID] = dict()
@@ -201,7 +201,7 @@ info_df.reset_index(inplace=True)
 # Merge the DataFrames
 merged_df = pd.merge(variants_metadata_df_snps, info_df, on='ID', how='left')
 
-# Output snp df to csv
+# Output snv df to csv
 merged_df.to_csv(snp_output, index = False)
 
 # Get preclin_panel output
@@ -213,7 +213,7 @@ preclin_panel_df = preclin_panel_df.astype(str)
 # only_genotypes = merged_df[pd.notna(merged_df['Genotype'])]
 only_genotypes = merged_df[merged_df['Genotype'] != '']
 for i, row in only_genotypes.iterrows():
-    preclin_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], row['Genotype']]  # type: ignore
+    preclin_panel_df.loc[i] = [row['ID'], row[BIOMARKER_NAME], row['Scoring Type'], row[VARIANT_TYPE], row[RESULT_OPTIONS], row['Genotype']]  # type: ignore
 
 preclin_panel_df.to_csv(snp_preclin_output, index = False)
 
