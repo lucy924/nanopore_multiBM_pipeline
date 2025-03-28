@@ -18,7 +18,8 @@ if os.getenv("SNAKEMAKE_DEBUG"):
             'vcf_all': f"{PREFIX}/results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp.vcf.gz",
             }
         output = {
-            'snv_csv': f"{PREFIX}/results_debug/{SAMPLE}/snv_annotation/{SAMPLE}.raw_snv_results.csv"
+            'snv_csv': f"{PREFIX}/results_debug/{SAMPLE}/snv_annotation/{SAMPLE}.raw_snv_results.csv",
+            'snv_panel_csv': f"{PREFIX}/results_debug/{SAMPLE}/snv_annotation/{SAMPLE}.snv_results.csv"
             }
         log = [f"{PREFIX}/results_debug/{SAMPLE}.snv_annotation.log"]
 
@@ -204,15 +205,15 @@ merged_df = pd.merge(variants_metadata_df_snps, info_df, on='ID', how='left')
 merged_df.to_csv(snp_output, index = False)
 
 # Get preclin_panel output
-preclin_stage_panel_result_header = ["ID", "Scoring Type", "Biomarker Type", "Result Options", "Result"]
 preclin_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
 # Set the dtypes for the columns
 preclin_panel_df = preclin_panel_df.astype(str)
 
 # Only get panel id with stuff in genotype result
-only_genotypes = merged_df[pd.notna(merged_df['Genotype'])]
+# only_genotypes = merged_df[pd.notna(merged_df['Genotype'])]
+only_genotypes = merged_df[merged_df['Genotype'] != '']
 for i, row in only_genotypes.iterrows():
-    preclin_panel_df.loc[i] = [row['ID'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], row['Genotype']]
+    preclin_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], row['Genotype']]  # type: ignore
 
 preclin_panel_df.to_csv(snp_preclin_output, index = False)
 

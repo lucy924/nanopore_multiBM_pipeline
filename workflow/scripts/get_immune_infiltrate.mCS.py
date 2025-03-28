@@ -143,7 +143,7 @@ for i, row in panel_data_ratio.iterrows():
     else:
         result = np.nan
         
-    preclin_panel_df.loc[i] = [row['ID'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], result]  
+    preclin_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], result]  
     
 for i, row in panel_data_infiltrate.iterrows():
     
@@ -172,10 +172,10 @@ for i, row in panel_data_infiltrate.iterrows():
     else:
         result = np.nan
         
-    preclin_panel_df.loc[i] = [row['ID'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], result]  
+    preclin_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], result]  
 
 # save preclin panel
-preclin_panel_df.to_csv(immune_results_fp)
+preclin_panel_df.to_csv(immune_results_fp, index=False)
 
 log.close()
 

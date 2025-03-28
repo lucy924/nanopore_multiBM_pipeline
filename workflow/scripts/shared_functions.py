@@ -69,7 +69,7 @@ CHROM_LENGTHS = {
 
 VARIANT_TYPE = "Variant Type (snp, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, immune_inf, microsatellite, demographic, clinicopathology)"
 
-preclin_stage_panel_result_header = ["ID", "Scoring Type", "Biomarker Type", "Result Options", "Result"]
+preclin_stage_panel_result_header = ["ID", "Marker name", "Scoring Type", "Biomarker Type", "Result Options", "Result"]
 
 variant_dict_columns_to_add = ['ClinVar', 'Significance (ClinVar)', 'Consequence (Clinvar)', 'Reference Allele', 'Variant Allele', 'Genotype', 'HGVS.c', 'HGVS.p', 'SV Length', 'SV Type']
 

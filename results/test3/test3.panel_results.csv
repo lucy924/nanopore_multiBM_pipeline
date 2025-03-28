@@ -1,0 +1,46 @@
+ID,Marker name,Scoring Type,Biomarker Type,Result Options,Result
+004,NOS3,allelic,snp,T|T/T|A/T|G/A|A/A|G/G|G,G|G
+005,NOS3,allelic,snp,C|C/C|T/T|T,T|C
+009,CHST11,continuous,mod - promoter region,0.0-1.0,0.1202386872202884
+010,KLF8,continuous,mod - promoter region,0.0-1.0,0.2421676545300592
+011,GPR158,continuous,mod - promoter region,0.0-1.0,0.2618603411513859
+012,C12orf42,continuous,mod - promoter region,0.0-1.0,0.2392036753445635
+013,WDR44,continuous,mod - promoter region,0.0-1.0,0.6964944649446494
+014,FLT1,continuous,mod - promoter region,0.0-1.0,0.0413255360623781
+022,PMF1,continuous,mod - promoter region,0.0-1.0,0.7149390243902439
+025,IL1B,allelic,snp,G|G/G|A/A|A,A|G
+026,IL1RAP,allelic,snp,G|G/G|A/A|A,G|A
+027,IL1RAP,allelic,snp,G|G/G|C/C|C,C|G
+028,IL1RAP,allelic,snp,T|T/T|A/T|C/A|A/A|C/C|C,C|T
+029,IL1RAP,allelic,snp,G|G/G|A/A|A,G|A
+030,IL18R1,allelic,snp,C|C/C|T/T|T,T|T
+031,IL18R1,allelic,snp,G|G/G|C/C|C,G|C
+032,IL18R1,allelic,snp,C|C/C|A/A|A,C|C
+033,IL18R1,allelic,snp,C|C/C|T/T|T,T|T
+035,IL18R1,allelic,snp,G|G/G|A/A|A,A|A
+036,IL18R1,allelic,snp,G|G/G|A/A|A,G|G
+037,IL18R1,allelic,snp,C|C/C|T/T|T,T|T
+038,IL18R1,allelic,snp,G|G/G|A/A|A,G|G
+048,XPA,allelic,snp,G|G/G|A/A|A,C|C
+056,ERCC2,allelic,snp,G|G/G|A/A|A,T|C
+057,ERCC6,allelic,snp,G|G/G|A/A|A,T|C
+060,NFKB1,allelic,snp,,CATTG|C
+061,CASP9,allelic,snp,G|G/G|A/A|A,T|T
+064,XRCC1,allelic,snp,G|G/G|A/A|A,C|C
+401,LMR,continuous,immune_ratio,0.0-10.0,
+402,NLR,continuous,immune_ratio,0.0-10.0,0.0183529052424682
+403,monocyte_inf,continuous,immune_inf,0.0-1.0,
+405,Bcell_inf,continuous,immune_inf,0.0-1.0,0.0177456741447506
+406,CD4_inf,continuous,immune_inf,0.0-1.0,0.0
+407,NK_inf,continuous,immune_inf,0.0-1.0,0.0256672410471266
+408,CD8_inf,continuous,immune_inf,0.0-1.0,0.0121458982222691
+409,Treg_inf,continuous,immune_inf,0.0-1.0,0.144382985705877
+410,Neutrophil_inf,continuous,immune_inf,0.0-1.0,0.0036695128932584
+411,Endothelial_inf,continuous,immune_inf,0.0-1.0,0.0263005364546374
+412,Eosinophil_inf,continuous,immune_inf,0.0-1.0,0.0311375174868231
+413,Fibroblast_inf,continuous,immune_inf,0.0-1.0,0.0234228972210477
+414,Cancer_inf,continuous,immune_inf,0.0-1.0,0.71552773682421
+501,age,continuous,demographic,0.0-150.0,64
+502,sex,categorical,demographic,M/F/O,M
+503,ethnicity,categorical,demographic,,
+504,grade,categorical,clinicopathology,,T2

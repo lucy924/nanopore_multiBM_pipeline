@@ -164,3 +164,9 @@ This might be the problem.
 ## Exp Ratio
 Input has to be exactly as I've done it, in "Expression Ratio Components" referring to the gene names in the panel.
 These numbers are representative, actual correlation of methylation to expression will need to be determined for each component of the expression ratio.
+
+## Running the file
+snakemake --dag run_sample_panel_for_BM_classifier | dot -Tsvg > dag.run_sample_panel_for_BM_classifier.svg
+snakemake run_sample_panel_for_BM_classifier --use-conda
+
+snakemake run_sample_panel_for_BM_classifier --use-conda --report --benchmark-extended

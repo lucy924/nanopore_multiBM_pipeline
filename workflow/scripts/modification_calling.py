@@ -257,7 +257,6 @@ def get_region_methylation(data):
 def format_results_for_preclin_output(results_df):
     """Make preclin panel output"""
     
-    preclin_stage_panel_result_header = ["ID", "Scoring Type", "Biomarker Type", "Result Options", "Result"]
     preclin_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
     panel_result_header_rawmod = preclin_stage_panel_result_header.copy()
     panel_result_header_rawmod.extend(['Meth (beta >= 0.8)', 'Total'])
@@ -297,9 +296,9 @@ def format_results_for_preclin_output(results_df):
             raise ValueError(f"code not ready for DNA methylation region = {panel_entry['DNA methylation region']} or variant type = {panel_entry[VARIANT_TYPE]}")
         
         if panel_entry[VARIANT_TYPE] != 'exp_ratio':
-            preclin_panel_df.loc[i] = [panel_id, panel_entry['Scoring Type'], biomarker_type, panel_entry['Variant'], result] 
+            preclin_panel_df.loc[i] = [panel_id, panel_entry['Gene name'], panel_entry['Scoring Type'], biomarker_type, panel_entry['Variant'], result] 
         
-        preclin_panel_rawmod_df.loc[i] = [panel_id, panel_entry['Scoring Type'], biomarker_type, panel_entry['Variant'], result, meth, total] 
+        preclin_panel_rawmod_df.loc[i] = [panel_id, panel_entry['Gene name'], panel_entry['Scoring Type'], biomarker_type, panel_entry['Variant'], result, meth, total] 
         
     return preclin_panel_df, preclin_panel_rawmod_df
 
@@ -332,7 +331,7 @@ def add_exp_ratio_to_results(preclin_panel_df, preclin_panel_rawmod_df):
         print(ratio1, ratio2, val1, val2, id1, id2)
         result = val1/val2
         
-        preclin_panel_df.loc[i] = [f'{id1}/{id2}', 'continuous', 'exp_ratio', '0.0-10.0', result]
+        preclin_panel_df.loc[i] = [f'{id1}/{id2}', f'{ratio1}/{ratio2}', 'continuous', 'exp_ratio', '0.0-10.0', result]
         i += 1
         
     return preclin_panel_df
