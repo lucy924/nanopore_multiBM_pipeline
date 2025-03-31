@@ -1,5 +1,6 @@
 max_cores: 26
 panel_metadata: "config/panel_metadata.clean.csv"
+# TODO: add genome reference here
 flanking_bp: 2000
 min_genome_coverage: 0.5
 max_genome_coverage: 2.0

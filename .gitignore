@@ -5,6 +5,8 @@
 *.bam*
 *.gz*
 *.zip
+**/*.vcf
+**/*.gtf
 **/*.post_beta.csv
 **/*.pre_beta.csv
 *.snf

@@ -1,6 +1,6 @@
 rule index_ref:
     input:
-        "resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna",
+        "resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna",  # TODO: make this an input in the config file
     output:
         "resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.fai",
     shell:
