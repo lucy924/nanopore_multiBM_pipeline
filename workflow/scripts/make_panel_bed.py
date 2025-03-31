@@ -116,6 +116,11 @@ all_targets_fp = snakemake.output['all_targets']
 # Load panel
 with open(panel_csv_fp, 'r') as fp:
     panel_csv = pd.read_csv(fp, dtype={'ID': str}, thousands = ',')
+    
+# ------------------------------------------------ #
+# Remove 400's and 500's
+panel_csv = panel_csv[~panel_csv.ID.str.startswith("4")]
+panel_csv = panel_csv[~panel_csv.ID.str.startswith("5")]
 
 # ------------------------------------------------ #
 # Add functional flanking regions
@@ -133,7 +138,7 @@ panel_bed = restructure_to_bed(panel_bed)
 
 # ------------------------------------------------ #
 # Save panel for post-seq analysis
-panel_bed.to_csv(panel_bed_fp, sep = '\t', index = False)
+panel_bed.to_csv(panel_bed_fp, sep = '\t', index = False, header = False)
 
 # ------------------------------------------------ #
 # Add immune infiltrate probes to bed for minknow file
@@ -141,4 +146,4 @@ all_targets = add_immune_infiltrate_locations(panel_bed, immune_reference_datase
 
 # ------------------------------------------------ #
 # Save targets for adding sequence buffer regions
-all_targets.to_csv(all_targets_fp, sep = '\t', index = False)
+all_targets.to_csv(all_targets_fp, sep = '\t', index = False, header = False)

@@ -9,22 +9,28 @@ include: "rules/mod_assist.smk"
 include: "rules/immune_assist.smk"
 
 SAMPLE = config['sample']
+PROJECT = config['project_name']
 cores = config.get("max_cores", 16)  # Default to 16 if not set
 
 
 rule get_input_for_minknow:
     input:
-        "minknow_input/targets.minknow.bed"
+        f"results/{PROJECT}/minknow_input/targets.buffed.bed"
 
 
 rule run_sample_panel_for_BM_classifier:
     input:
-        f"results/{SAMPLE}/{SAMPLE}.panel_results.csv"
+        f"results/{PROJECT}/{SAMPLE}.panel_results.csv"
+
+
+rule get_report_for_sample:
+    input:
+        f"workflow/report/{PROJECT}/{SAMPLE}.report.md"
 
 
 rule test_things:
     # snakemake --dag test_things | dot -Tsvg > dag.test_things.svg
     # snakemake test_things --use-conda
     input:
-        panel_results = f"results/{SAMPLE}/{SAMPLE}.panel_results.csv"
+        panel_results = f"results/{PROJECT}/{SAMPLE}/{SAMPLE}.panel_results.csv"
 

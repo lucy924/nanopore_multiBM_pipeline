@@ -12,7 +12,7 @@ import json
 import numpy as np
 import pandas as pd
 from snakemake.script import snakemake
-from shared_functions import VARIANT_TYPE, preclin_stage_panel_result_header, variant_prep
+from shared_functions import BIOMARKER_TYPE, preclin_stage_panel_result_header, variant_prep
 
 lymphocytes = ["CD19", "CD4_Eff",
                "CD56", "CD8", "Treg", ]
@@ -133,7 +133,7 @@ panel_data_ratio = variant_prep(snakemake.input["panel_metadata"], 'immune_ratio
 panel_data_infiltrate = variant_prep(snakemake.input["panel_metadata"], 'immune_inf')
 
 # Make preclin panel output
-preclin_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
+bm_classif_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
 
 for i, row in panel_data_ratio.iterrows():
     if row['Gene name'] == "LMR":
@@ -143,7 +143,7 @@ for i, row in panel_data_ratio.iterrows():
     else:
         result = np.nan
         
-    preclin_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], result]  
+    bm_classif_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[BIOMARKER_TYPE], row['Result Options'], result]  
     
 for i, row in panel_data_infiltrate.iterrows():
     
@@ -172,10 +172,10 @@ for i, row in panel_data_infiltrate.iterrows():
     else:
         result = np.nan
         
-    preclin_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], result]  
+    bm_classif_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[BIOMARKER_TYPE], row['Result Options'], result]  
 
 # save preclin panel
-preclin_panel_df.to_csv(immune_results_fp, index=False)
+bm_classif_panel_df.to_csv(immune_results_fp, index=False)
 
 log.close()
 

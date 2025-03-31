@@ -144,7 +144,7 @@ rule combine_bedmethyls:
     output:
         temp(f"results/{SAMPLE}/mod_calling/{SAMPLE}.wf_mods.all.bedmethyl.bed")
     params:
-        threads = config['threads']
+        threads = cores
     benchmark:
         f"logs/{SAMPLE}/{SAMPLE}.benchmark.combine_bedmethyls.tsv"
     shell:

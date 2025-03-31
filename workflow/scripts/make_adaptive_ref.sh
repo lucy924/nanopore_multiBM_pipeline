@@ -15,7 +15,7 @@ version="1.1, 2025_02_08 - LP"
 REF=${snakemake_input[ref_fasta]}
 BED=${snakemake_input[all_targets]}
 CHROM_SIZES=${snakemake_input[chrom_sizes]}
-opts=${snakemake_params[flanking_bp]}
+opts=${snakemake_params[buffersize_bp]}
 LOG=${snakemake_log}
 
 # check executable present
@@ -38,6 +38,14 @@ sort -k 1V,1 -k 2n,2 ${BED} \
   > ${snakemake_output[sorted_targets]}
 
 echo "create expanded BED" >> $LOG
+ 
+echo ${BASES_TO_EXPAND_PER_SIDE}
+echo ${BASES_TO_EXPAND_PER_SIDE}
+echo ${snakemake_output[sorted_targets]}
+echo ${CHROM_SIZES}
+
+bedtools slop -l 2000 -r 2000 -i /home/dejlu879/ProjectProtocol/nanopore_multiBM_pipeline/results/BCG_on_NMIBC/minknow_input_supp/sorted_all_targets.2000.bed -g /home/dejlu879/ProjectProtocol/nanopore_multiBM_pipeline/resources/hg38_no_alt.chrom_sizes > /home/dejlu879/ProjectProtocol/nanopore_multiBM_pipeline/results/BCG_on_NMIBC/minknow_input_supp/ini_all_targets.test.bed
+
 bedtools slop \
   -l ${BASES_TO_EXPAND_PER_SIDE} \
   -r ${BASES_TO_EXPAND_PER_SIDE} \
@@ -45,26 +53,29 @@ bedtools slop \
   -g ${CHROM_SIZES} \
   > ${snakemake_output[ini_targets]}
 
-echo "merge region overlaps where present and collapse their descriptions as a csv list" >> $LOG
-bedtools merge -i ${snakemake_output[ini_targets]} \
-  -c 4 \
-  -o collapse \
-  > ${SLOPPED_BED}
+# echo "merge region overlaps where present and collapse their descriptions as a csv list" >> $LOG
+# bedtools merge -i ${snakemake_output[ini_targets]} \
+#   -c 4 \
+#   -o collapse \
+#   > ${SLOPPED_BED}
 
-echo "print total reference width" >> $LOG
-TOT_WIDTH=$(gawk 'BEGIN{FS="\t"; OFS="\t";tot=0}{tot=tot+$3-$2}END{print tot}' \
-  ${SLOPPED_BED})
-echo "# total reference width in ${SLOPPED_BED} is $TOT_WIDTH bps" >> $LOG
+# echo "print total reference width" >> $LOG
+# TOT_WIDTH=$(gawk 'BEGIN{FS="\t"; OFS="\t";tot=0}{tot=tot+$3-$2}END{print tot}' \
+#   ${SLOPPED_BED})
+# echo "# total reference width in ${SLOPPED_BED} is $TOT_WIDTH bps" >> $LOG
+# if [ $TOT_WIDTH < 500 ]; then
+#   exit 1
+# fi
 
-echo "extract fasta sequences" >> $LOG
-bedtools getfasta -fi ${REF} \
-  -bed ${SLOPPED_BED} \
-  -fo ${SUBSETTED_FASTA} \
-  -name
+# echo "extract fasta sequences" >> $LOG
+# bedtools getfasta -fi ${REF} \
+#   -bed ${SLOPPED_BED} \
+#   -fo ${SUBSETTED_FASTA} \
+#   -name
 
 
-# This is the final file which you will upload into MinKNOW:
-echo "# the file ${SUBSETTED_FASTA} can be used in Minknow for adaptive sequencing" >> $LOG
-echo "# the file ${SUBSETTED_FASTA} can be used in Minknow for adaptive sequencing"
+# # This is the final file which you will upload into MinKNOW:
+# echo "# the file ${SUBSETTED_FASTA} can be used in Minknow for adaptive sequencing" >> $LOG
+# echo "# the file ${SUBSETTED_FASTA} can be used in Minknow for adaptive sequencing"
 
-exit 0
+# exit 0

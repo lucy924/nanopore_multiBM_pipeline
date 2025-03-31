@@ -7,6 +7,7 @@ dependencies:
   - pandas =2.2.2
   - nextflow =23.04.4
   - samtools =1.21
+  - bedtools =2.31.1
   - pip
   - pip:
     - git+https://github.com/brentp/cyvcf2.git@v0.31.1

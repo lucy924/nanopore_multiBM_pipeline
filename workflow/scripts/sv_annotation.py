@@ -26,7 +26,7 @@ if os.getenv("SNAKEMAKE_DEBUG"):
 import pandas as pd
 from cyvcf2 import VCF
 # from snakemake.script import snakemake
-from shared_functions import variant_prep, get_location_string, get_annotation_dict, get_annotation_info_dict, get_snp_by_genomic_location, variant_dict_columns_to_add
+from shared_functions import variant_prep, get_location_string, get_annotation_dict, get_annotation_info_dict, get_snv_by_genomic_location, variant_dict_columns_to_add
 
 # -------------------------------------------------------------------------- #
 # Data from snakefile
@@ -57,7 +57,7 @@ for j, row in enumerate(variants_metadata_df_svs.iterrows()):
     else:
         entry_found = False
     
-    print(f"target {target_ID} of snp metadata")
+    print(f"target {target_ID} of sv metadata")
     
     if target_ID not in info_to_add_to_metadata.keys():
         info_to_add_to_metadata[target_ID] = dict()
@@ -84,7 +84,7 @@ for j, row in enumerate(variants_metadata_df_svs.iterrows()):
 
         # 1. Match genomic location
         if (chrom == variant.CHROM) and (start == variant.start) and (end == variant.end):
-            info_to_add_to_metadata[target_ID], entry_found = get_snp_by_genomic_location(
+            info_to_add_to_metadata[target_ID], entry_found = get_snv_by_genomic_location(
                 variants_metadata_df_svs, variant, info_dict, annotation_dict, 
                 info_to_add_to_metadata[target_ID], entry_found, log, location=loc_list
             )
@@ -94,7 +94,7 @@ for j, row in enumerate(variants_metadata_df_svs.iterrows()):
         
         # 3. Match end genomic position
         if (chrom == variant.CHROM) and (end == variant.end):
-            info_to_add_to_metadata[target_ID], entry_found = get_snp_by_genomic_location(
+            info_to_add_to_metadata[target_ID], entry_found = get_snv_by_genomic_location(
                 variants_metadata_df_svs, variant, info_dict, annotation_dict, 
                 info_to_add_to_metadata[target_ID], entry_found, log, location=loc_list, end_only = True
             )
@@ -133,7 +133,7 @@ info_df.reset_index(inplace=True)
 # Merge the DataFrames
 merged_df = pd.merge(variants_metadata_df_svs, info_df, on='ID', how='left')
 
-# Output snp df to csv
+# Output sv df to csv
 merged_df.to_csv(sv_output, index = False)
 
 log.close()

@@ -59,13 +59,13 @@ if min_cov < perc_HG < max_cov:
     # "Criteria met with value {config[start_value]}" > {output}
 else:
     log.write(
-        "Criteria not met. Please adjust 'flanking_bp' in config/config.yaml and rerun.\n" +
-        f"Selected flanking_bp ({snakemake.config["flanking_bp"]}) gave percentage coverage: {perc_HG}%\n" +
+        "Criteria not met. Please adjust 'buffersize_bp' in config/config.yaml and rerun.\n" +
+        f"Selected buffersize_bp ({snakemake.config["buffersize_bp"]}) gave percentage coverage: {perc_HG}%\n" +
         f"Goal: between {min_cov} and {max_cov}"
         )
     print(
-        "Criteria not met. Please adjust 'flanking_bp' in config/config.yaml and rerun.\n",
-        f"Selected flanking_bp ({snakemake.config["flanking_bp"]}) gave percentage coverage: {perc_HG}%\n",
+        "Criteria not met. Please adjust 'buffersize_bp' in config/config.yaml and rerun.\n",
+        f"Selected buffersize_bp ({snakemake.config["buffersize_bp"]}) gave percentage coverage: {perc_HG}%\n",
         f"Goal: between {min_cov} and {max_cov}"
         )
     with open(output_bed_fp, 'w') as fw:

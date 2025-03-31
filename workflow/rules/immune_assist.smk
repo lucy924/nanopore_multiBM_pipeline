@@ -6,17 +6,17 @@ cores = config.get("max_cores", 16)  # Default to 16 if not set
 rule run_methylCS:
     # script looks a bit weird because the program does things with the names to make the final files
     input:
-        beta_matrix = f"results/{SAMPLE}/mod_calling/{SAMPLE}.methatlas.csv"
+        beta_matrix = f"results/{PROJECT}/{SAMPLE}/mod_calling/{SAMPLE}.methatlas.csv"
     output:
-        cibersort_mix_matrix_upload_file = f"results/{SAMPLE}/methylCS/{SAMPLE}.CS_mix_matrix.txt",
-        cibersort_bladder_ref_upload_file = f"results/{SAMPLE}/methylCS/{SAMPLE}.CS_bladder_ref.txt"
+        cibersort_mix_matrix_upload_file = f"results/{PROJECT}/{SAMPLE}/methylCS/{SAMPLE}.CS_mix_matrix.txt",
+        cibersort_bladder_ref_upload_file = f"results/{PROJECT}/{SAMPLE}/methylCS/{SAMPLE}.CS_bladder_ref.txt"
     params:
-        cibersort_mix_matrix_upload_fname = f"results/{SAMPLE}/methylCS/{SAMPLE}.CS_mix_matrix",
+        cibersort_mix_matrix_upload_fname = f"results/{PROJECT}/{SAMPLE}/methylCS/{SAMPLE}.CS_mix_matrix",
         sample_name = {SAMPLE}
     conda: 
         "../envs/methylcibersort.yaml"
     benchmark:
-        f"logs/{SAMPLE}/{SAMPLE}.benchmark.run_methylCS.tsv"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.benchmark.run_methylCS.tsv"
     shell:
         """
         if ! Rscript -e "if (!requireNamespace('MethylCIBERSORT', quietly=TRUE)) quit(status=1)"; then
@@ -29,11 +29,11 @@ rule run_methylCS:
 
 rule run_CIBERSORTX:
     input:
-        cibersort_mix_matrix_upload_file = f"results/{SAMPLE}/methylCS/{SAMPLE}.CS_mix_matrix.txt",
-        cibersort_bladder_ref_upload_file = f"results/{SAMPLE}/methylCS/{SAMPLE}.CS_bladder_ref.txt",
+        cibersort_mix_matrix_upload_file = f"results/{PROJECT}/{SAMPLE}/methylCS/{SAMPLE}.CS_mix_matrix.txt",
+        cibersort_bladder_ref_upload_file = f"results/{PROJECT}/{SAMPLE}/methylCS/{SAMPLE}.CS_bladder_ref.txt",
         standin = "resources/test3.CS_bladder_ref.csv"
     output:
-        cibersortx_output = f"results/{SAMPLE}/methylCS/CIBERSORTx_{SAMPLE}_Results.csv"
+        cibersortx_output = f"results/{PROJECT}/{SAMPLE}/methylCS/CIBERSORTx_{SAMPLE}_Results.csv"
     params:
         username = config["cibersortx"]["username"],
         token = config["cibersortx"]["token"]

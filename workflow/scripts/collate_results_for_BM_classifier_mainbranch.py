@@ -4,11 +4,12 @@
 # LUCY PICARD
 # ---------------------------------- #
 # collate_results_for_preclintrial.py
+# Get the results PER PATIENT for pre-clinical trial investigation of biomarkers
 ################################################################################
 
 import pandas as pd
 from snakemake.script import snakemake
-from shared_functions import VARIANT_TYPE, preclin_stage_panel_result_header, variant_prep
+from shared_functions import BIOMARKER_TYPE, preclin_stage_panel_result_header, variant_prep
 
 # DEBUG PATHS
     # path2_panel_metadata_csv = f"{PREFIX}/config/testing_panel_metadata1.csv"
@@ -36,16 +37,16 @@ with open(immune_results, 'r') as f1:
 # path2_panel_metadata_csv = snakemake.input["panel_metadata"]
 
 preclin_stage_panel_result_header = ["ID", "Marker name", "Scoring Type", "Biomarker Type", "Result Options", "Result"]
-preclin_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
+bm_classif_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
 
 panel_demog = variant_prep(path2_panel_metadata_csv, variant_type='demographic')
 panel_clinpath = variant_prep(path2_panel_metadata_csv, variant_type='clinicopathology')
 
 demclin_df = pd.concat([panel_demog, panel_clinpath])
 for i, row in demclin_df.iterrows():
-    preclin_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], row['Result']]  # type: ignore  
+    bm_classif_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[BIOMARKER_TYPE], row['Result Options'], row['Result']]  # type: ignore  
 
-full_panel_results_df = pd.concat([snv_df, mod_df, immune_df, preclin_panel_df])
+full_panel_results_df = pd.concat([snv_df, mod_df, immune_df, bm_classif_panel_df])
 full_panel_results_df = full_panel_results_df.sort_values(['ID'])
 full_panel_results_df.reset_index(drop = True, inplace = True)
 

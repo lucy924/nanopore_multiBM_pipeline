@@ -1,6 +1,6 @@
-ID,Marker name,Scoring Type,Biomarker Type,Result Options,Result
-004,NOS3,allelic,snp,T|T/T|A/T|G/A|A/A|G/G|G,G|G
-005,NOS3,allelic,snp,C|C/C|T/T|T,T|C
+ID,Biomarker name,Scoring Type,Biomarker Type,Result Options,Result
+004,NOS3,genotypic,snv,T|T/T|A/T|G/A|A/A|G/G|G,G|G
+005,NOS3,genotypic,snv,C|C/C|T/T|T,T|C
 009,CHST11,continuous,mod - promoter region,0.0-1.0,0.1202386872202884
 010,KLF8,continuous,mod - promoter region,0.0-1.0,0.2421676545300592
 011,GPR158,continuous,mod - promoter region,0.0-1.0,0.2618603411513859
@@ -8,25 +8,25 @@ ID,Marker name,Scoring Type,Biomarker Type,Result Options,Result
 013,WDR44,continuous,mod - promoter region,0.0-1.0,0.6964944649446494
 014,FLT1,continuous,mod - promoter region,0.0-1.0,0.0413255360623781
 022,PMF1,continuous,mod - promoter region,0.0-1.0,0.7149390243902439
-025,IL1B,allelic,snp,G|G/G|A/A|A,A|G
-026,IL1RAP,allelic,snp,G|G/G|A/A|A,G|A
-027,IL1RAP,allelic,snp,G|G/G|C/C|C,C|G
-028,IL1RAP,allelic,snp,T|T/T|A/T|C/A|A/A|C/C|C,C|T
-029,IL1RAP,allelic,snp,G|G/G|A/A|A,G|A
-030,IL18R1,allelic,snp,C|C/C|T/T|T,T|T
-031,IL18R1,allelic,snp,G|G/G|C/C|C,G|C
-032,IL18R1,allelic,snp,C|C/C|A/A|A,C|C
-033,IL18R1,allelic,snp,C|C/C|T/T|T,T|T
-035,IL18R1,allelic,snp,G|G/G|A/A|A,A|A
-036,IL18R1,allelic,snp,G|G/G|A/A|A,G|G
-037,IL18R1,allelic,snp,C|C/C|T/T|T,T|T
-038,IL18R1,allelic,snp,G|G/G|A/A|A,G|G
-048,XPA,allelic,snp,G|G/G|A/A|A,C|C
-056,ERCC2,allelic,snp,G|G/G|A/A|A,T|C
-057,ERCC6,allelic,snp,G|G/G|A/A|A,T|C
-060,NFKB1,allelic,snp,,CATTG|C
-061,CASP9,allelic,snp,G|G/G|A/A|A,T|T
-064,XRCC1,allelic,snp,G|G/G|A/A|A,C|C
+025,IL1B,genotypic,snv,G|G/G|A/A|A,A|G
+026,IL1RAP,genotypic,snv,G|G/G|A/A|A,G|A
+027,IL1RAP,genotypic,snv,G|G/G|C/C|C,C|G
+028,IL1RAP,genotypic,snv,T|T/T|A/T|C/A|A/A|C/C|C,C|T
+029,IL1RAP,genotypic,snv,G|G/G|A/A|A,G|A
+030,IL18R1,genotypic,snv,C|C/C|T/T|T,T|T
+031,IL18R1,genotypic,snv,G|G/G|C/C|C,G|C
+032,IL18R1,genotypic,snv,C|C/C|A/A|A,C|C
+033,IL18R1,genotypic,snv,C|C/C|T/T|T,T|T
+035,IL18R1,genotypic,snv,G|G/G|A/A|A,A|A
+036,IL18R1,genotypic,snv,G|G/G|A/A|A,G|G
+037,IL18R1,genotypic,snv,C|C/C|T/T|T,T|T
+038,IL18R1,genotypic,snv,G|G/G|A/A|A,G|G
+048,XPA,genotypic,snv,G|G/G|A/A|A,C|C
+056,ERCC2,genotypic,snv,G|G/G|A/A|A,T|C
+057,ERCC6,genotypic,snv,G|G/G|A/A|A,T|C
+060,NFKB1,genotypic,snv,,CATTG|C
+061,CASP9,genotypic,snv,G|G/G|A/A|A,T|T
+064,XRCC1,genotypic,snv,G|G/G|A/A|A,C|C
 401,LMR,continuous,immune_ratio,0.0-10.0,
 402,NLR,continuous,immune_ratio,0.0-10.0,0.0183529052424682
 403,monocyte_inf,continuous,immune_inf,0.0-1.0,

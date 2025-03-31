@@ -165,7 +165,7 @@ def meth_reduce_metadata_df(df):
             "BCG non response characteristic",
             "Is variant in coding region?",
             "SNP ID",
-            "Variant",
+            "Result Options",
             "Illumina EPIC ID",
             "DNA methylation",
             "Notes",
@@ -265,7 +265,7 @@ def make_results_df(results_as_list_dicts):
         results_as_list_dicts,
         columns=[
             "ID",
-            "Gene name",
+            "Biomarker name",
             "chrom",
             "start pos",
             "end pos",

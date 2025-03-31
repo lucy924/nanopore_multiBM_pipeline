@@ -29,10 +29,10 @@ from warnings import warn
 import pandas as pd
 from cyvcf2 import VCF
 # from snakemake.script import snakemake
-from shared_functions import variant_prep, get_location_string, get_annotation_dict, get_annotation_info_dict, add_result, get_snp_by_genomic_location, variant_dict_columns_to_add, VARIANT_TYPE,preclin_stage_panel_result_header
+from shared_functions import variant_prep, get_location_string, get_annotation_dict, get_annotation_info_dict, add_result, get_snv_by_genomic_location, variant_dict_columns_to_add, BIOMARKER_TYPE,preclin_stage_panel_result_header
 
 
-def get_snp_by_RS_number(variants_metadata_df_sub, variant, info_dict, annotation_dict, row_data, entry_found, log, clinvar = False):
+def get_snv_by_RS_number(variants_metadata_df_sub, variant, info_dict, annotation_dict, row_data, entry_found, log, clinvar = False):
     """
     VCF header:
     ##INFO=<ID=RS,Number=.,Type=String,Description="dbSNP ID (i.e. rs number)">
@@ -61,12 +61,12 @@ def get_snp_by_RS_number(variants_metadata_df_sub, variant, info_dict, annotatio
 panel_metadata_fp = snakemake.input['panel_metadata']
 vcf_clinvar_fp = snakemake.input['vcf_clinvar_gz']
 vcf_all_fp = snakemake.input['vcf_all']
-snp_output = snakemake.output['snv_csv']
-snp_preclin_output = snakemake.output['snv_panel_csv']
+snv_output = snakemake.output['snv_csv']
+snv_preclin_output = snakemake.output['snv_panel_csv']
 
 log = open(snakemake.log[0], 'w')
 # ------------------------------------------------ #
-variants_metadata_df_snps = variant_prep(panel_metadata_fp, 'snp')
+variants_metadata_df_snvs = variant_prep(panel_metadata_fp, 'snv')
 
 vcf_clinvar = VCF(vcf_clinvar_fp)
 vcf_all = VCF(vcf_all_fp)
@@ -78,6 +78,9 @@ num_variants_found_clinvar = 0
 rows_found = list()
 rows_not_found = list()
 
+# TODO: Add/check functionality for "area_mutations"
+"""The script also processes the “area_mutations” biomarker type, and outputs the same panel information as the “snv” biomarker type, with an “alterations” entry in place of the “genotype” entry. Any/all alterations found in the area are recorded by the HGVS.c value where available, otherwise the genomic location in “chrN:start-end” format. Where there are multiple alterations found the results are separated by “|”."""
+
 breaking = False
 for i, vcf in enumerate(vcfs):
     if i == 0:
@@ -87,14 +90,14 @@ for i, vcf in enumerate(vcfs):
         clinvar = False
         log.write('################## NOT CLINVAR ######################\n')
         
-    for j, row in enumerate(variants_metadata_df_snps.iterrows()):
+    for j, row in enumerate(variants_metadata_df_snvs.iterrows()):
         target_ID = row[1]['ID']
         if target_ID in rows_found:
             continue
         else:
             entry_found = False
         
-        log.write(f"looking for panel target {target_ID} of snp metadata\n")
+        log.write(f"looking for panel target {target_ID} of snv metadata\n")
         
         if target_ID not in info_to_add_to_metadata.keys():
             info_to_add_to_metadata[target_ID] = dict()
@@ -126,8 +129,8 @@ for i, vcf in enumerate(vcfs):
 
             # 1. Matching RS number
             if 'RS' in info_dict.keys():
-                info_to_add_to_metadata[target_ID], entry_found = get_snp_by_RS_number(
-                    variants_metadata_df_snps, variant, info_dict, annotation_dict, 
+                info_to_add_to_metadata[target_ID], entry_found = get_snv_by_RS_number(
+                    variants_metadata_df_snvs, variant, info_dict, annotation_dict, 
                     info_to_add_to_metadata[target_ID], entry_found, log, clinvar = clinvar
                 )
             if entry_found:
@@ -136,8 +139,8 @@ for i, vcf in enumerate(vcfs):
                 
             # 2. Match genomic location
             if (chrom == variant.CHROM) and (start == variant.start) and (end == variant.end):
-                info_to_add_to_metadata[target_ID], entry_found = get_snp_by_genomic_location(
-                    variants_metadata_df_snps, variant, info_dict, annotation_dict, 
+                info_to_add_to_metadata[target_ID], entry_found = get_snv_by_genomic_location(
+                    variants_metadata_df_snvs, variant, info_dict, annotation_dict, 
                     info_to_add_to_metadata[target_ID], entry_found, log = log, location = loc_list,
                     clinvar = clinvar
                 )
@@ -147,8 +150,8 @@ for i, vcf in enumerate(vcfs):
             
             # 3. Match end genomic position only
             if (chrom == variant.CHROM) and (end == variant.end):
-                info_to_add_to_metadata[target_ID], entry_found = get_snp_by_genomic_location(
-                    variants_metadata_df_snps, variant, info_dict, annotation_dict, info_to_add_to_metadata[target_ID], entry_found, log, location = loc_list, end_only = True, 
+                info_to_add_to_metadata[target_ID], entry_found = get_snv_by_genomic_location(
+                    variants_metadata_df_snvs, variant, info_dict, annotation_dict, info_to_add_to_metadata[target_ID], entry_found, log, location = loc_list, end_only = True, 
                     clinvar = clinvar
                 )
             if entry_found:
@@ -157,8 +160,8 @@ for i, vcf in enumerate(vcfs):
             
             # 4. Match start genomic position only - likely indel
             if (chrom == variant.CHROM) and (start == variant.start):
-                info_to_add_to_metadata[target_ID], entry_found = get_snp_by_genomic_location(
-                    variants_metadata_df_snps, variant, info_dict, annotation_dict, info_to_add_to_metadata[target_ID], entry_found, log, location = loc_list, end_only = False, start_only = True,
+                info_to_add_to_metadata[target_ID], entry_found = get_snv_by_genomic_location(
+                    variants_metadata_df_snvs, variant, info_dict, annotation_dict, info_to_add_to_metadata[target_ID], entry_found, log, location = loc_list, end_only = False, start_only = True,
                     clinvar = clinvar
                 )
             if entry_found:
@@ -187,11 +190,11 @@ for i, vcf in enumerate(vcfs):
 log.write(f"\nnumber of variants found total: {num_variants_found_total}\n")
 log.write(f"  number of variants found in clinvar: {num_variants_found_clinvar}\n")
 log.write(f"number of variants not found: {len(rows_not_found)}\n")
-log.write(f'number of variants I was looking for: {len(variants_metadata_df_snps)}\n')
+log.write(f'number of variants I was looking for: {len(variants_metadata_df_snvs)}\n')
 print(f"number of variants found total: {num_variants_found_total}")
 print(f"  number of variants found in clinvar: {num_variants_found_clinvar}")
 print(f"number of variants not found: {len(rows_not_found)}")
-print(f'number of variants I was looking for: {len(variants_metadata_df_snps)}')
+print(f'number of variants I was looking for: {len(variants_metadata_df_snvs)}')
 
 # Convert dictionary to DataFrame
 info_df = pd.DataFrame(info_to_add_to_metadata).T
@@ -199,22 +202,22 @@ info_df.index.name = 'ID'
 info_df.reset_index(inplace=True)
 
 # Merge the DataFrames
-merged_df = pd.merge(variants_metadata_df_snps, info_df, on='ID', how='left')
+merged_df = pd.merge(variants_metadata_df_snvs, info_df, on='ID', how='left')
 
-# Output snp df to csv
-merged_df.to_csv(snp_output, index = False)
+# Output snv df to csv
+merged_df.to_csv(snv_output, index = False)
 
-# Get preclin_panel output
-preclin_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
+# Get bm_classif_panel output
+bm_classif_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
 # Set the dtypes for the columns
-preclin_panel_df = preclin_panel_df.astype(str)
+bm_classif_panel_df = bm_classif_panel_df.astype(str)
 
 # Only get panel id with stuff in genotype result
 # only_genotypes = merged_df[pd.notna(merged_df['Genotype'])]
 only_genotypes = merged_df[merged_df['Genotype'] != '']
 for i, row in only_genotypes.iterrows():
-    preclin_panel_df.loc[i] = [row['ID'], row['Gene name'], row['Scoring Type'], row[VARIANT_TYPE], row['Variant'], row['Genotype']]  # type: ignore
+    bm_classif_panel_df.loc[i] = [row['ID'], row['Biomarker name'], row['Scoring Type'], row[BIOMARKER_TYPE], row['Result Options'], row['Genotype']]  # type: ignore
 
-preclin_panel_df.to_csv(snp_preclin_output, index = False)
+bm_classif_panel_df.to_csv(snv_preclin_output, index = False)
 
 log.close()

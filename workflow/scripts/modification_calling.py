@@ -12,7 +12,7 @@ import json
 import numpy as np
 import pandas as pd
 from snakemake.script import snakemake
-from shared_functions import VARIANT_TYPE, CHROMOSOMES, preclin_stage_panel_result_header, variant_prep
+from shared_functions import BIOMARKER_TYPE, CHROMOSOMES, preclin_stage_panel_result_header, variant_prep
 
 
 def export_for_methatlas(df):
@@ -183,7 +183,7 @@ def make_results_df(results_as_list_dicts):
         results_as_list_dicts,
         columns=[
             "ID",
-            "Gene name",
+            "Biomarker name",
             "chrom",
             "start pos",
             "end pos",
@@ -257,10 +257,10 @@ def get_region_methylation(data):
 def format_results_for_preclin_output(results_df):
     """Make preclin panel output"""
     
-    preclin_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
+    bm_classif_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
     panel_result_header_rawmod = preclin_stage_panel_result_header.copy()
     panel_result_header_rawmod.extend(['Meth (beta >= 0.8)', 'Total'])
-    preclin_panel_rawmod_df = pd.DataFrame(columns=panel_result_header_rawmod)
+    bm_classif_panel_rawmod_df = pd.DataFrame(columns=panel_result_header_rawmod)
 
     for i, (panel_id, data) in enumerate(results_df.groupby(by="ID", observed=False)):
         
@@ -275,46 +275,46 @@ def format_results_for_preclin_output(results_df):
             result = data['beta'][0]
             total = np.nan
             meth = np.nan
-            biomarker_type = panel_entry[VARIANT_TYPE]
+            biomarker_type = panel_entry[BIOMARKER_TYPE]
             
         elif panel_entry['DNA methylation region'] == 'promoter':
             # calculate promotor region score
             result, meth, total = get_region_methylation(data)
-            biomarker_type = panel_entry[VARIANT_TYPE] + ' - promoter region'
+            biomarker_type = panel_entry[BIOMARKER_TYPE] + ' - promoter region'
             
-        elif panel_entry[VARIANT_TYPE] == 'expression':
+        elif panel_entry[BIOMARKER_TYPE] == 'expression':
             # calculate promotor region score
             result, meth, total = get_region_methylation(data)
-            biomarker_type = panel_entry[VARIANT_TYPE]
+            biomarker_type = panel_entry[BIOMARKER_TYPE]
                     
-        elif panel_entry[VARIANT_TYPE] == 'exp_ratio':
+        elif panel_entry[BIOMARKER_TYPE] == 'exp_ratio':
             # calculate promotor region score
             result, meth, total = get_region_methylation(data)
-            biomarker_type = panel_entry[VARIANT_TYPE]
+            biomarker_type = panel_entry[BIOMARKER_TYPE]
             
         else:
-            raise ValueError(f"code not ready for DNA methylation region = {panel_entry['DNA methylation region']} or variant type = {panel_entry[VARIANT_TYPE]}")
+            raise ValueError(f"code not ready for DNA methylation region = {panel_entry['DNA methylation region']} or variant type = {panel_entry[BIOMARKER_TYPE]}")
         
-        if panel_entry[VARIANT_TYPE] != 'exp_ratio':
-            preclin_panel_df.loc[i] = [panel_id, panel_entry['Gene name'], panel_entry['Scoring Type'], biomarker_type, panel_entry['Variant'], result] 
+        if panel_entry[BIOMARKER_TYPE] != 'exp_ratio':
+            bm_classif_panel_df.loc[i] = [panel_id, panel_entry['Biomarker name'], panel_entry['Scoring Type'], biomarker_type, panel_entry['Result Options'], result] 
         
-        preclin_panel_rawmod_df.loc[i] = [panel_id, panel_entry['Gene name'], panel_entry['Scoring Type'], biomarker_type, panel_entry['Variant'], result, meth, total] 
+        bm_classif_panel_rawmod_df.loc[i] = [panel_id, panel_entry['Biomarker name'], panel_entry['Scoring Type'], biomarker_type, panel_entry['Result Options'], result, meth, total] 
         
-    return preclin_panel_df, preclin_panel_rawmod_df
+    return bm_classif_panel_df, bm_classif_panel_rawmod_df
 
 
-def add_exp_ratio_to_results(preclin_panel_df, preclin_panel_rawmod_df):
-    exp_ratio_panel_results = preclin_panel_rawmod_df[preclin_panel_rawmod_df['Biomarker Type'] == "exp_ratio"] 
+def add_exp_ratio_to_results(bm_classif_panel_df, bm_classif_panel_rawmod_df):
+    exp_ratio_panel_results = bm_classif_panel_rawmod_df[bm_classif_panel_rawmod_df['Biomarker Type'] == "exp_ratio"] 
     panel_input_exp_ratio_idxd = panel_data_exp_ratio.set_index('ID')
 
     exp_ratio_data = dict()
     for panel_id, data in exp_ratio_panel_results.groupby(by="ID", observed=False):
-        print(i)
+        # print(i)
         data = data.set_index('ID')
         data_entry = data.loc[panel_id].to_dict()
         
         ratio_name = panel_input_exp_ratio_idxd.loc[panel_id]['Expression Ratio Components']
-        gene_name = panel_input_exp_ratio_idxd.loc[panel_id]['Gene name']
+        gene_name = panel_input_exp_ratio_idxd.loc[panel_id]['Biomarker name']
         region_result = data_entry['Result']
         if ratio_name not in exp_ratio_data.keys():
             exp_ratio_data[ratio_name] = {
@@ -323,7 +323,7 @@ def add_exp_ratio_to_results(preclin_panel_df, preclin_panel_rawmod_df):
         else:
             exp_ratio_data[ratio_name][gene_name] = (region_result, panel_id)
 
-    i = len(preclin_panel_df)+2
+    i = len(bm_classif_panel_df)+2
     for k, val in exp_ratio_data.items():
         ratio1, ratio2 = k.split('/')
         val1, id1 = val[ratio1]
@@ -331,10 +331,10 @@ def add_exp_ratio_to_results(preclin_panel_df, preclin_panel_rawmod_df):
         print(ratio1, ratio2, val1, val2, id1, id2)
         result = val1/val2
         
-        preclin_panel_df.loc[i] = [f'{id1}/{id2}', f'{ratio1}/{ratio2}', 'continuous', 'exp_ratio', '0.0-10.0', result]
+        bm_classif_panel_df.loc[i] = [f'{id1}/{id2}', f'{ratio1}/{ratio2}', 'continuous', 'exp_ratio', '0.0-10.0', result]
         i += 1
         
-    return preclin_panel_df
+    return bm_classif_panel_df
 
 # ------------------------------------------------ #
 # get snakemake variables
@@ -371,7 +371,7 @@ all_mod_data = pd.concat([panel_data_mod, panel_data_exp, panel_data_exp_ratio])
 # ------------------------------------------------ #
 # Locate genomic coordinates of key points (from metadata file)
 
-panel_meth_flank_df = add_prom_start_end(panel_data_mod.copy())
+panel_meth_flank_df = add_prom_start_end(all_mod_data.copy())
 panel_meth_flank_df = add_downstream_start_end(
     panel_meth_flank_df.copy())
 
@@ -396,13 +396,13 @@ results_df = get_results_df(
 # Format for panel output
 # Additional table that has number of methylated positions in region calculations if needed
 
-preclin_panel_df, preclin_panel_rawmod_df = format_results_for_preclin_output(results_df)
+bm_classif_panel_df, bm_classif_panel_rawmod_df = format_results_for_preclin_output(results_df)
 
-# Add exp_ratio results to preclin_panel_df
-preclin_panel_df = add_exp_ratio_to_results(preclin_panel_df, preclin_panel_rawmod_df)
+# Add exp_ratio results to bm_classif_panel_df
+bm_classif_panel_df = add_exp_ratio_to_results(bm_classif_panel_df, bm_classif_panel_rawmod_df)
 
 
-preclin_panel_df.to_csv(results_fp, index = False)
-preclin_panel_rawmod_df.to_csv(rawresults_fp, index = False)
+bm_classif_panel_df.to_csv(results_fp, index = False)
+bm_classif_panel_rawmod_df.to_csv(rawresults_fp, index = False)
 
 log.close()
