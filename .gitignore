@@ -9,6 +9,9 @@
 **/*.gtf
 **/*.post_beta.csv
 **/*.pre_beta.csv
+**/*.bedmethyl.bed
+**/execution
+**/OPTIONAL_FILE
 *.snf
 **/__pycache__
 .snakemake
@@ -22,8 +25,6 @@ results/test4
 results_debug
 debug
 logs
-config/panel_metadata.csv
-config/panel_metadata.scores.csv
 results/test3/mod_calling/test3.wf_mods.all.dss_format.tsv
 results/test3/mod_calling/test3.post_beta.csv
 results/test3/mod_calling/test3.pre_beta.csv
@@ -31,3 +32,4 @@ results/test3/mod_calling/test3.pre_beta.csv
 .nextflow
 **/.nextflow.log*
 **/work
+results/test4predict/wf-humvar
