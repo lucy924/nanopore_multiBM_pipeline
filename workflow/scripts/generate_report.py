@@ -70,6 +70,7 @@ all_results_df.reset_index(names='ID', inplace=True)
 all_results_df = all_results_df[header]
     
 # all_results_dict = all_results_df.to_dict()
+all_results_df = all_results_df.map(lambda x: x.replace('|', '\\|') if isinstance(x, str) else x)
 
 results = {
     "sample_name": sample_name,
