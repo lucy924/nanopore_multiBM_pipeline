@@ -7,9 +7,31 @@
 ################################################################################
 
 import os
+
+if os.getenv("SNAKEMAKE_DEBUG"):
+    class FakeSnakemake:
+        SAMPLE = "findorig_adaptiverefcov"
+        PROJECT = "sequenced_adaptiveref"
+        BUFFER = 2000
+        PREFIX = "/external/analyses/lucy/nanopore_multiBM_pipeline"
+        input = {
+            'minknow_target_bed': f"results/{PROJECT}/minknow_input_supp/targets.minknow.{BUFFER}.bed"
+            }
+        output = {
+            'final_bed_name': f"results/{PROJECT}/minknow_input/targets.buffed.bed"
+            }
+        params = {
+            'min_cov': 0.5,
+            'max_cov': 2.0,
+            'buffer': BUFFER
+        }
+        log = [f"{PREFIX}/results_debug/{SAMPLE}.snv_annotation.log"]
+
+    snakemake = FakeSnakemake()
+
 import pandas as pd
 import json
-from snakemake.script import snakemake
+# from snakemake.script import snakemake  # type: ignore
 from shared_functions import HG_LENGTH, CHROMOSOMES, CHROM_LENGTHS
 
 def calc_coverage(variants_bed, log):
@@ -54,8 +76,8 @@ log.write('--------------------------------\n')
 output_bed_fp = snakemake.output['final_bed_name']
 
 if min_cov < perc_HG < max_cov:
-    log.write(f"Yay we found it! Final coverage: {perc_HG}\n")
-    print(f"Yay we found it! Final coverage: {perc_HG}")
+    log.write(f"Yay we found it! Final coverage: {perc_HG}%\n")
+    print(f"Yay we found it! Final coverage: {perc_HG}%")
     os.system(f'cp {input_bed} {output_bed_fp}')
     # "Criteria met with value {config[start_value]}" > {output}
 else:

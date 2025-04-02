@@ -109,8 +109,7 @@ def reduce_metadata_df(df):
             "Illumina EPIC ID",
             # "DNA methylation",
             "Notes",
-            "WARNINGS",
-            "Ref",
+            "References",
             "length",
         ]
     )

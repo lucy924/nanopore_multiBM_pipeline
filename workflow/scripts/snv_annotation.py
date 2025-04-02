@@ -12,7 +12,7 @@ if os.getenv("SNAKEMAKE_DEBUG"):
         SAMPLE = "test3"
         PREFIX = "/external/analyses/lucy/nanopore_multiBM_pipeline"
         input = {
-            'panel_metadata': f"{PREFIX}/config/testing_panel_metadata.csv",
+            'panel_metadata': f"{PREFIX}/config/panel_metadata_inthesis.csv",
             'vcf_clinvar_gz': f"{PREFIX}/results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf.gz",
             'vcf_clinvar_gz_tbi': f"{PREFIX}/results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf.gz.tbi",
             'vcf_all': f"{PREFIX}/results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp.vcf.gz",

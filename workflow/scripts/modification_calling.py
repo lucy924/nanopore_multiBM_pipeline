@@ -8,6 +8,24 @@
 
 
 import os
+if os.getenv("SNAKEMAKE_DEBUG"):
+    class FakeSnakemake:
+        SAMPLE = "test6"
+        PREFIX = "/external/analyses/lucy/nanopore_multiBM_pipeline"
+        input = {
+            'panel_metadata': f"{PREFIX}/config/panel_metadata_inthesis.csv",
+            'post_beta': f"{PREFIX}/results/{SAMPLE}/mod_calling/{SAMPLE}.post_beta.csv"
+            }
+        output = {
+            'epic_probe_results': f"{PREFIX}/results/{SAMPLE}/mod_calling/{SAMPLE}.methatlas.csv",
+            'panel_mod_results': f"{PREFIX}/results/{SAMPLE}/mod_calling/{SAMPLE}.mod_results.csv",
+            'panel_rawmod_results': f"{PREFIX}/results/{SAMPLE}/mod_calling/{SAMPLE}.rawmod_results.csv"
+            }
+        log = [f"{PREFIX}/results_debug/{SAMPLE}.modification_calling.log"]
+
+    snakemake = FakeSnakemake()
+
+
 import json
 import numpy as np
 import pandas as pd
@@ -377,7 +395,7 @@ panel_meth_flank_df = add_downstream_start_end(
 
 # ------------------------------------------------ #
 # Compare methylation discovered at those coords to what is expected/useful (from metadata file)
-# meth_threshold = 0.8 (? discuss with Aaron)  
+# meth_threshold = 0.8
 # `pos + 1` should map correctly to the methylated loci
 
 panel_meth_flank_sorted_df, dss_df_sorted = (

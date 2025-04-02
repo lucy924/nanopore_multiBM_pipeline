@@ -7,6 +7,23 @@
 ################################################################################
 
 
+import os
+if os.getenv("SNAKEMAKE_DEBUG"):
+    class FakeSnakemake:
+        SAMPLE = "test6"
+        PREFIX = "/external/analyses/lucy/nanopore_multiBM_pipeline"
+        input = {
+            'IlluminaEPIC_genomic_locations_hg38': f"{PREFIX}/resources/IlluminaEPIC_genomic_locations_hg38.csv",
+            'dss_file': f"{PREFIX}/results/{SAMPLE}/mod_calling/{SAMPLE}.wf_mods.all.dss_format.tsv"
+            }
+        output = {
+            'pre_beta': f"{PREFIX}/results/{SAMPLE}/mod_calling/{SAMPLE}.pre_beta.csv"
+            }
+        log = [f"{PREFIX}/logs/{SAMPLE}/{SAMPLE}.prep_for_betas.log"]
+
+    snakemake = FakeSnakemake()
+    
+    
 import pandas as pd
 from snakemake.script import snakemake  # type: ignore
 
@@ -66,6 +83,8 @@ dss_fp = snakemake.input["dss_file"]
 # dss_fp = "/home/dejlu879/ProjectProtocol/ext_bm_pipeline_dev/results/test2/mod_calling/test2.wf_mods.all.dss_format.tsv"
 # path2_panel_metadata_csv = snakemake.input["panel_metadata"]
 # results_fp = snakemake.output['panel_mod_results']
+
+os.makedirs(os.path.dirname(snakemake.log[0]), exist_ok=True)
 
 log = open(snakemake.log[0], 'w')
 

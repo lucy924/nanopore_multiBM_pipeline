@@ -1,4 +1,4 @@
-ID,Marker name,Scoring Type,Biomarker Type,Result Options,Result,Meth (beta >= 0.8),Total
+ID,Biomarker name,Scoring Type,Biomarker Type,Result Options,Result,Meth (beta >= 0.8),Total
 009,CHST11,continuous,mod - promoter region,0.0-1.0,0.1481925304573597,1484,10014
 010,KLF8,continuous,mod - promoter region,0.0-1.0,0.2707460184409053,323,1193
 011,GPR158,continuous,mod - promoter region,0.0-1.0,0.29196032367528063,2237,7662
