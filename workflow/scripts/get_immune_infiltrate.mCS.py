@@ -177,6 +177,8 @@ for i, row in panel_data_infiltrate.iterrows():
 # save preclin panel
 bm_classif_panel_df.to_csv(immune_results_fp, index=False)
 
+# TODO: output figure, see dev ipynb for code
+
 log.close()
 
 # Notes:

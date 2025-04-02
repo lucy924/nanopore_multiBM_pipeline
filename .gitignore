@@ -35,6 +35,10 @@ results/test3/mod_calling/test3.pre_beta.csv
 .nextflow
 **/.nextflow.log*
 **/work
+**/*.bedmethyl.bed
+results/test4predict/wf-humvar
+**/wf-humvar/execution
+**/wf-humvar/OPTIONAL_FILE
 **/*.nextflow*
 **/work
 **/__pycache__
