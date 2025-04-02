@@ -6,10 +6,29 @@
 # make_panel_bed.py
 ################################################################################
 
+import os
+if os.getenv("SNAKEMAKE_DEBUG"):
+    class FakeSnakemake:
+        SAMPLE = "test7debug"
+        PROJECT = "BCG_on_NMIBC"
+        PREFIX = "/external/analyses/lucy/nanopore_multiBM_pipeline"
+        input = {
+            'panel_csv': f"{PREFIX}/config/panel_metadata_inthesis.csv",
+            'immune_reference_dataset': f"{PREFIX}/resources/test3.CS_bladder_ref.csv",
+            'epic_locs_hg38': f"{PREFIX}/resources/IlluminaEPIC_genomic_locations_hg38.csv"
+            }
+        output = {
+            'panel_bed': f"{PREFIX}/results/{PROJECT}/minknow_input_supp/biomarker_panel.bed",
+            'all_targets': f"{PREFIX}/results/{PROJECT}/minknow_input/targets.bed"
+            }
+        # log = [f"{PREFIX}/results_debug/{SAMPLE}.snv_annotation.log"]
+
+    snakemake = FakeSnakemake()
+    
 from warnings import WarningMessage
 import numpy as np
 import pandas as pd
-from snakemake.script import snakemake
+# from snakemake.script import snakemake  # type: ignore
 
 
 def add_functional_flanking_regions(panel_csv):
@@ -56,9 +75,11 @@ def add_functional_flanking_regions(panel_csv):
 
 
 def restructure_to_bed(df):
-    """ add empty score column and reorder columns"""
+    """ add empty score column, reorder columns, make positions integers"""
     df['score'] = np.nan
     df = df[['#chrom', 'chromStart', 'chromEnd', 'name', 'score', 'strand']]
+    df = df.astype({'chromStart': 'int'})
+    df = df.astype({'chromEnd': 'int'})
     return df
 
 
@@ -67,6 +88,8 @@ def get_immune_infiltrate_ref_locs(immune_reference_dataset, epic_locs_hg38):
     # Load immune reference dataset
     with open(immune_reference_dataset, 'r') as fp:
         imm_ref = pd.read_csv(fp)
+        if 'NAME' in imm_ref.columns:
+            imm_ref.rename(columns={'NAME': 'CpGs'}, inplace = True)
     probe_list = imm_ref['CpGs']
     
     # Load epic genome locations
@@ -111,6 +134,9 @@ panel_bed_fp = snakemake.output['panel_bed']
 immune_reference_dataset = snakemake.input['immune_reference_dataset']
 epic_locs_hg38 = snakemake.input['epic_locs_hg38']
 all_targets_fp = snakemake.output['all_targets']
+
+os.makedirs(os.path.dirname(panel_bed_fp), exist_ok=True)
+os.makedirs(os.path.dirname(all_targets_fp), exist_ok=True)
 
 # ------------------------------------------------ #
 # Load panel

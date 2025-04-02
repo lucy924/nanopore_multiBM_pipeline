@@ -1,3 +1,6 @@
+PROJECT = config['project_name']
+BUFFER = config['buffersize_bp']
+
 rule index_ref:
     input:
         "resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna",  # TODO: make this an input in the config file
@@ -17,11 +20,12 @@ rule get_chrom_sizes:
 rule make_panel_bed:
     input:
         panel_csv=config["panel_metadata"],
+        # immune_reference_dataset="resources/test3.CS_bladder_ref.csv",  # this selection is too small for adaptive seq coverage
         immune_reference_dataset="resources/ref_atlas_bladder.csv",
         epic_locs_hg38="resources/IlluminaEPIC_genomic_locations_hg38.csv",
     output:
-        panel_bed="results/panel.bed",
-        all_targets=temp("results/panel_prep/all_targets.bed"),
+        panel_bed=f"results/{PROJECT}/minknow_input_supp/biomarker_panel.bed",
+        all_targets=f"results/{PROJECT}/minknow_input/targets.bed",
     log:
         "logs/make_minknow_input/make_panel_bed.log",
     script:
@@ -29,32 +33,31 @@ rule make_panel_bed:
 
 rule run_make_adaptive_ref:
     input:
-        all_targets="results/panel_prep/all_targets.bed",
+        all_targets=f"results/{PROJECT}/minknow_input/targets.bed",
         ref_fasta="resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna",
         fasta_index="resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.fai",
         chrom_sizes=f"resources/hg38_no_alt.chrom_sizes",
     output:
         # temp(f"results/output_{config['flanking_bp']}.txt"),
-        minknow_target_bed=f"minknow_input/targets.minknow.{config['flanking_bp']}.bed",
-        minknow_target_fasta=f"minknow_input/targets.minknow.{config['flanking_bp']}.fasta",
-        sorted_targets=f"results/make_minknow_input/sorted_all_targets.{config['flanking_bp']}.bed",
-        ini_targets=f"results/make_minknow_input/ini_all_targets.{config['flanking_bp']}.bed"
+        minknow_target_bed=f"results/{PROJECT}/minknow_input_supp/targets.minknow.{BUFFER}.bed",
+        minknow_target_fasta=f"results/{PROJECT}/minknow_input_supp/targets.minknow.{BUFFER}.fasta",
+        sorted_targets=f"results/{PROJECT}/minknow_input_supp/sorted_all_targets.{BUFFER}.bed",
+        ini_targets=f"results/{PROJECT}/minknow_input_supp/ini_all_targets.{BUFFER}.bed"
     log:
-        f"logs/make_minknow_input/all.{config['flanking_bp']}.log"
+        f"logs/{PROJECT}/minknow_input_supp/make_adaptive_ref.{BUFFER}.log"
     script:
         "../scripts/make_adaptive_ref.sh"
 
 rule check_coverage:
     input:
-        # f"results/output_{config['flanking_bp']}.txt",
-        minknow_target_bed=f"minknow_input/targets.minknow.{config['flanking_bp']}.bed",
+        minknow_target_bed=f"results/{PROJECT}/minknow_input_supp/targets.minknow.{BUFFER}.bed"
     output:
-        # "results/final_output.txt",
-        final_bed_name = "minknow_input/targets.minknow.bed"
+        final_bed_name = f"results/{PROJECT}/minknow_input/targets.buffed.bed"
     params:
         min_cov = config["min_genome_coverage"],
-        max_cov = config["max_genome_coverage"]
+        max_cov = config["max_genome_coverage"],
+        buffer = BUFFER
     log:
-        "logs/make_minknow_input/check_criteria.log"
+        f"logs/{PROJECT}/minknow_input_supp/check_criteria.{BUFFER}.log"  # For some reason this errors
     script:
         "../scripts/calculate_coverage.py"
