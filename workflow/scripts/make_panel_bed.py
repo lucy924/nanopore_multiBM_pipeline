@@ -116,6 +116,11 @@ all_targets_fp = snakemake.output['all_targets']
 # Load panel
 with open(panel_csv_fp, 'r') as fp:
     panel_csv = pd.read_csv(fp, dtype={'ID': str}, thousands = ',')
+    
+# ------------------------------------------------ #
+# Remove 400's and 500's
+panel_csv = panel_csv[~panel_csv.ID.str.startswith("4")]
+panel_csv = panel_csv[~panel_csv.ID.str.startswith("5")]
 
 # ------------------------------------------------ #
 # Add functional flanking regions
