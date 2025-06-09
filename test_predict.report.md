@@ -1,4 +1,4 @@
-# BCG Susceptibility Panel for NMIBC
+## BCG Susceptibility Panel for NMIBC
 *This test combines the results for relevant single nucleotide variants, methylation variants, and immune infiltrate prediction to reach a final score for prediction of BCG treatment success for NMIBC.*  
 **Panel name** BCG on NMIBC<br>
 **URL:** https://github.com/lucy924/nanopore_multiBM_pipeline
@@ -10,7 +10,7 @@ Papillary urothelial carcinoma, high grade (grade 3/3 - WHO 1973)<br>
 Noninvasive, pTa<br>
 **Specimen:** TURBT biopsy  
 ___
-## Overall Result and Interpretation
+### Overall Result and Interpretation
 <span style="font-size:16px;">Tumour is **Somewhat Likely** to respond to treatment.</span><br>
 
 *Guidance: Result is out of Highly Unlikely, Somewhat Unlikely, Somewhat Likely, Highly Likely*
@@ -18,17 +18,14 @@ ___
 **Comments:** The result is an aggregate score obtained by combining the scores of biomarkers that reach read depth threshold and fall within respective scoring parameters.
 
 ___
-## Immune infiltrate results
+### Immune infiltrate results
 
-| Immune infiltrate proportions (full) | Immune infiltrate proportions (non-malignant only) |
+| Immune infiltrate proportions (full) | Immune infiltrate proportions (non-malignant) |
 | --- | --- |
-| ![Immune infiltrate proportions (full)](results/test6/immune_infiltrate/immune_infiltrate_barplot.png) | ![Immune infiltrate proportions (non-malignant only)](results/test6/immune_infiltrate/immune_infiltrate_barplot_noca.png) |
-
-<br>  
-<br>  
+| <img src="results/test6/immune_infiltrate/immune_infiltrate_barplot.png" alt="Immune infiltrate proportions (full)" width="300"/> | <img src="results/test6/immune_infiltrate/immune_infiltrate_barplot_noca.png" alt="Immune infiltrate proportions (non-malignant)" width="300"/> |
 
 ___
-## Raw results
+### Raw results
 *Guidance: Total (normalised) Score is a scale of 0% – 100%. 0% will respond and 100% will not respond to BCG treatment. Most results will fall between 25% and 75%. We recommend treatment with BCG when the result is \<50% for patients who are otherwise healthy, and \<40% for all other patients.*
 
 
@@ -67,5 +64,5 @@ ___
 <!-- </div>   -->
 
 ___
-## Methodology
+### Methodology
 Nanopore sequencing was used to detect single nucleotide variants, methylation status and immune status (by methylation) of the tumour sample. 
