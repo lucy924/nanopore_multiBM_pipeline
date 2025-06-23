@@ -1,34 +1,20 @@
-max_cores: 26
-panel_metadata: "config/panel_metadata.clean.csv"
+project_name: "BCG_on_NMIBC"
+sample: "test6"
+panel_metadata: "config/panel_metadata.example.csv"
+bam_pass_directory: "/external/data/lucy/20241107-BiomarkerProject/merged_bams"
+
 buffersize_bp: 2000
 min_genome_coverage: 0.5
 max_genome_coverage: 2.0
-# sample: 'test4'
-# sample: "test4predict"
-sample: "test5"
-project_name: "BCG_on_NMIBC"
-# bam_pass_directory: "/external/data/lucy/20241107-BiomarkerProject/all_passed_bams"
-# bam_pass_directory: "/external/data/lucy/20241107-BiomarkerProject/merged_bams/passed_reads_part1.bam"
-bam_pass_directory: "/external/data/lucy/20241107-BiomarkerProject/merged_bams"
+max_cores: 16
 
 nextflow:
-  basecaller: "dna_r10.4.1_e8.2_400bps_hac@v4.1.0"  # Overidden by clair3 model (matching this one just in case - see /home/dejlu879/.nextflow/assets/epi2me-labs/wf-human-variation/nextflow.config and /home/dejlu879/.nextflow/assets/epi2me-labs/wf-human-variation/data/clair3_models.tsv)
   profile: "standard"
-  threads: 24
+  threads: 16
 
-cibersortx:
-  username: lucy.picard@postgrad.otago.ac.nz
-  token: 62c6ce7d617349ca44a7ee8efb7df65c
-
-# late_pod5s/post_ESR_basecalling --config dna_r10.4.1_e8.2_400bps_5khz_modbases_5hmc_5mc_cg_hac.cfg
-# late_pod5s/at_ESR_basecalling --config   dna_r10.4.1_e8.2_400bps_5khz_modbases_5hmc_5mc_cg_hac.cfg
-# early_pod5s/basecalling --config         dna_r10.4.1_e8.2_400bps_modbases_5hmc_5mc_cg_hac.cfg
-
-# test3 clair3 model Autoselected Clair3 model: r1041_e82_400bps_hac_v410
-
-# Commands to use:
-# snakemake --dag get_input_for_minknow | dot -Tsvg > dag.get_input_for_minknow.test5.svg
+# To Run
+# mamba activate snakemake
 # snakemake get_input_for_minknow --use-conda
-# Alright that didnt work but I just want to test the others
-# snakemake --dag run_sample_panel_for_BM_classifier | dot -Tsvg > dag.run_sample_panel_for_BM_classifier.test5.svg
 # snakemake run_sample_panel_for_BM_classifier --use-conda
+# snakemake get_report_for_sample --use-conda
+
