@@ -10,19 +10,19 @@ Panorama is built using the [Snakemake](https://snakemake.readthedocs.io/en/stab
 
 ## Main Components
 
-* Section 1: Adaptive Sequencing Target File Creation
-* Section 2: Sample Processing to get Biomarker Results
-* Section 3: Sample Processing to Patient Report (reliant on pre-clinical trial using Section 2 outputs) 
+* [Section 1](#section-1-adaptive-sequencing-target-file-creation): Adaptive Sequencing Target File Creation
+* [Section 2](#section-2-sample-processing-to-get-biomarker-results): Sample Processing to get Biomarker Results
+* [Section 3](#section-3-sample-processing-to-patient-report): Sample Processing to Patient Report (reliant on pre-clinical trial using Section 2 outputs) 
 
 ## Installation
-First ensure [Conda](https://anaconda.org/anaconda/conda) and [Docker](https://www.docker.com) are installed.
+First ensure [Conda](https://anaconda.org/anaconda/conda) and [Docker](https://www.docker.com) are installed. Then carry out the below.  
 
 ```bash
 git clone https://github.com/lucy924/nanopore_multiBM_pipeline.git
 cd https://github.com/lucy924/nanopore_multiBM_pipeline.git
-conda create -n pipeline_venv conda=24.7.1 peppy=0.40.7 bioconda::snakemake=8.27.1 nextflow=23.04.4
+conda create -n panorama_venv conda=24.7.1 peppy=0.40.7 bioconda::snakemake=8.27.1 nextflow=23.04.4
 conda config --set channel_priority strict
-conda activate pipeline_venv
+conda activate panorama_venv
 nextflow pull epi2me-labs/wf-human-variation -r 2.6.0
 ```
 
@@ -39,13 +39,13 @@ This is a csv file containing metadata for each biomarker. See the [panel descri
 **Config file**  
 This is a yaml file (a human readable format), that the pipeline requires. This is where you put paramters such as the project name, sample name, name of the panel.csv file, and the path to the output bams from MinKNOW. Everything else can be left as it is, *unless* you need to change certain parameters after running Section 1.  
 You may need to adjust `buffersize` to bring your adative sampling file into the range specified by `min_/max_` `genome_coverage`, or you can tweak the coverage numbers if you are confident doing so.
+
 There are two output files from Section 1 for use in MinKNOW.
-1. For adaptive sampling use this file: `targets_buffered.bed` located here:  
-    [minknow_input/targets_buffered.bed](minknow_input/targets_buffered.bed)
-2. For alignment during the run you may use the buffered file above, or you can use this file: `targets_for_align.bed` located here: [minknow_input/targets_buffered.bed](minknow_input/targets_buffered.bed)
+1. For adaptive sampling use this file: `targets_buffered.bed` located here: `minknow_input/targets_buffered.bed`
+2. For alignment during the run you may use the buffered file above, or you can use the file: `targets_for_align.bed` located here: `minknow_input/targets_buffered.bed`
 
 
-The first command in each below section is to get a flow chart of steps the pipeline will run (a dag)
+The first command in each below section is to get a flow chart of steps the pipeline will run (a [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph)).
 
 ### To run Section 1
 ```bash
@@ -71,7 +71,9 @@ Contributions are welcome! Please open an issue or submit a pull request. -->
 
 ## License
 
-This project will likely be open-source, however it is not ready for a license yet. This will be updated as soon as possible.
+This project will likely be open-source, however, it is not ready for a license yet. This will be updated as soon as possible.
+
+
 
 ## Panel entry descriptions
 Note an example can be found here: [config/panel_metadata.example.csv](config/panel_metadata.example.csv)  
@@ -117,3 +119,30 @@ Edit this file to your parameters.
 | nextflow        | basecaller            | string  | Fallback basecaller for the nextflow pipeline.                                              | "dna_r10.4.1_e8.2_400bps_hac@v4.1.0"                              |
 | nextflow        | threads               | integer | Maximum number of cpu threads allowed during nextflow.                                      | 16                                                                 |
 | nextflow        | profile               | string  | Profile to use for nextflow (e.g. singularity, docker)                                      | "standard"                                                         |
+
+## Section Details
+### Section 1: Adaptive Sequencing Target File Creation
+
+![Section1FlowChart](resources/SectionFlowCharts/Section1.png)
+
+Adaptive sequencing target file creation. Required input files are the config file containing pipeline parameters (such as the sample name and project name), the CSV file of the panel of biomarkers, and the reference fasta file (hg38). These files are then processed to output a bed file containing buffered genomic regions for input to MinKNOW. This file is checked to ensure it meets the genome coverage requirements. If it does not, the `buffersize_bp` parameter in the config file should be adjusted by the user.
+
+### Section 2: Sample Processing to get Biomarker Results
+
+![Section2FlowChart](resources/SectionFlowCharts/Section2.png)
+
+A sample is first prepared, and using the input bed file from Part One, undergoes adaptive sequencing using the nanopore device. The aligned BAM files, output by MinKNOW, are used as input to this section of the Snakemake pipeline, which begins by running the nextflow workflow [wf-human-variation](https://github.com/epi2me-labs/wf-human-variation) by EPI2ME Labs. The resulting VCF files containing SNVs are processed, extracting the results that are specific to the panel targets. Similarly, bedmethyl files containing methylation data are processed, first calculating methylation beta values (a standard methylation measurement) and then extracting CpG methylation data specific to panel targets. Immune infiltrate is calculated from the methylation data, and then these results, along with SNV and CpG panel targets, are added to a final data file containing panel results for the patient. The top panel (blue) indicates parts of this pipeline that use software developed by ONT, and the bottom panel (green) indicates novel parts of the pipeline. The key Snakemake rules for each process are included in the process description.
+
+### Section 3: Sample Processing to Patient Report
+
+![Section3FlowChart](resources/SectionFlowCharts/Section3.png)
+
+A sample is first prepared and sequenced using adaptive sequencing and the generated input bed file from Section 1 on a nanopore device and processed in the same way as Section 2 to extract panel results. Immune infiltrate, SNV and methylation panel targets are collected, and the final score is calculated from the score information obtained from the pre-clinical trial (below). The top panel (blue) indicates parts of this pipeline that use software developed by ONT, and the bottom panel (green) indicates novel parts of the Snakemake pipeline. The key Snakemake rules for each process are included in the process description.
+
+### Preclinical Trial
+Suggested use at the Section 2 stage.
+
+![SuggestedPreclinTrial_FlowChart](resources/SectionFlowCharts/SuggestedPreclinTrial.png)
+
+The input dataset to the section comprises all the sample data collected as the output of Part Two for the patient cohort. Preprocessing of categorical data types is initially required, followed by splitting into training and testing datasets. Biomarker weighting (blue box) is performed by weights identified in previous literature and/or techniques such as elastic net or simple t-test, likely processed using Bayesian regression. Weights are input into machine learning methods (green box), such as gradient boosting or random forest. Model accuracy metrics are analysed and compared against different approaches to build the best estimator model. Depending on the final method outputs, scores are added to the panel as a hazard ratio or a hazard ratio per standard deviation.
+
