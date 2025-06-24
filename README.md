@@ -1,6 +1,6 @@
 # Panorama
 
-The goal of this pipeline was to design and develop a proof-of-concept bioinformatic software pipeline utilising the capabilities of nanopore sequencing to combine multiple biomarkers of different sources, specifically, mutations, methylation and tumour immune infiltrate. This would enable the prediction of BCG failure in eligible patients. This pipeline was developed to be a clinical bioinformatic workflow that requires little bioinformatic expertise to use. The results of such a tool, with the appropriate pre-clinical trial, could aid in predicting BCG failure, a critical metric for assisting clinicians and patients to choose the most appropriate course of treatment.  
+The goal of this pipeline was to design and develop a proof-of-concept bioinformatic software pipeline utilising the capabilities of nanopore sequencing ([ONT](https://nanoporetech.com/)), to combine multiple biomarkers of different sources, specifically, mutations, methylation and tumour immune infiltrate. This would enable the prediction of BCG failure in eligible patients. This pipeline was developed to be a clinical bioinformatic workflow that requires little bioinformatic expertise to use. The results of such a tool, with the appropriate pre-clinical trial, could aid in predicting BCG failure, a critical metric for assisting clinicians and patients to choose the most appropriate course of treatment.  
 
 Panorama was developed as part of the Doctoral thesis entitled:  
 **Epigenetic Consequences of BCG Immunotherapy In Bladder Cancer**  
