@@ -123,26 +123,26 @@ Edit this file to your parameters.
 ## Section Details
 ### Section 1: Adaptive Sequencing Target File Creation
 
-![Section1FlowChart](resources/SectionFlowCharts/Section1.png)
+[<img src="resources/SectionFlowCharts/Section1.png" width="400"/>](resources/SectionFlowCharts/Section1.png)
 
 Adaptive sequencing target file creation. Required input files are the config file containing pipeline parameters (such as the sample name and project name), the CSV file of the panel of biomarkers, and the reference fasta file (hg38). These files are then processed to output a bed file containing buffered genomic regions for input to MinKNOW. This file is checked to ensure it meets the genome coverage requirements. If it does not, the `buffersize_bp` parameter in the config file should be adjusted by the user.
 
 ### Section 2: Sample Processing to get Biomarker Results
 
-![Section2FlowChart](resources/SectionFlowCharts/Section2.png)
+[<img src="resources/SectionFlowCharts/Section2.png" width="400"/>](resources/SectionFlowCharts/Section2.png)
 
 A sample is first prepared, and using the input bed file from Part One, undergoes adaptive sequencing using the nanopore device. The aligned BAM files, output by MinKNOW, are used as input to this section of the Snakemake pipeline, which begins by running the nextflow workflow [wf-human-variation](https://github.com/epi2me-labs/wf-human-variation) by EPI2ME Labs. The resulting VCF files containing SNVs are processed, extracting the results that are specific to the panel targets. Similarly, bedmethyl files containing methylation data are processed, first calculating methylation beta values (a standard methylation measurement) and then extracting CpG methylation data specific to panel targets. Immune infiltrate is calculated from the methylation data, and then these results, along with SNV and CpG panel targets, are added to a final data file containing panel results for the patient. The top panel (blue) indicates parts of this pipeline that use software developed by ONT, and the bottom panel (green) indicates novel parts of the pipeline. The key Snakemake rules for each process are included in the process description.
 
 ### Section 3: Sample Processing to Patient Report
 
-![Section3FlowChart](resources/SectionFlowCharts/Section3.png)
+[<img src="resources/SectionFlowCharts/Section3.png" width="400"/>](resources/SectionFlowCharts/Section3.png)
 
 A sample is first prepared and sequenced using adaptive sequencing and the generated input bed file from Section 1 on a nanopore device and processed in the same way as Section 2 to extract panel results. Immune infiltrate, SNV and methylation panel targets are collected, and the final score is calculated from the score information obtained from the pre-clinical trial (below). The top panel (blue) indicates parts of this pipeline that use software developed by ONT, and the bottom panel (green) indicates novel parts of the Snakemake pipeline. The key Snakemake rules for each process are included in the process description.
 
 ### Preclinical Trial
 Suggested use at the Section 2 stage.
 
-![SuggestedPreclinTrial_FlowChart](resources/SectionFlowCharts/SuggestedPreclinTrial.png)
+[<img src="resources/SectionFlowCharts/SuggestedPreclinTrial.png" width="400"/>](resources/SectionFlowCharts/SuggestedPreclinTrial.png)
 
 The input dataset to the section comprises all the sample data collected as the output of Part Two for the patient cohort. Preprocessing of categorical data types is initially required, followed by splitting into training and testing datasets. Biomarker weighting (blue box) is performed by weights identified in previous literature and/or techniques such as elastic net or simple t-test, likely processed using Bayesian regression. Weights are input into machine learning methods (green box), such as gradient boosting or random forest. Model accuracy metrics are analysed and compared against different approaches to build the best estimator model. Depending on the final method outputs, scores are added to the panel as a hazard ratio or a hazard ratio per standard deviation.
 
