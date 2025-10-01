@@ -1,0 +1,12 @@
+ID,Biomarker name,Scoring Type,Biomarker Type,Result Options,Result
+403,Monocyte_inf,continuous,immune_inf,0.0-1.0,NaN
+405,Bcell_inf,continuous,immune_inf,0.0-1.0,0.017670
+406,CD4_inf,continuous,immune_inf,0.0-1.0,0.000000
+407,NK_inf,continuous,immune_inf,0.0-1.0,0.024874
+408,CD8_inf,continuous,immune_inf,0.0-1.0,0.013450
+409,Treg_inf,continuous,immune_inf,0.0-1.0,0.144454
+410,Neutrophil_inf,continuous,immune_inf,0.0-1.0,0.003646
+411,Endothelial_inf,continuous,immune_inf,0.0-1.0,0.026305
+412,Eosinophil_inf,continuous,immune_inf,0.0-1.0,0.031166
+413,Fibroblast_inf,continuous,immune_inf,0.0-1.0,0.023482
+414,Cancer_inf,continuous,immune_inf,0.0-1.0,0.714953
