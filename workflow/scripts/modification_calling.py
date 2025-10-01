@@ -8,11 +8,29 @@
 
 
 import os
+if os.getenv("SNAKEMAKE_DEBUG"):
+    class FakeSnakemake:
+        SAMPLE = "test6"
+        PREFIX = "/external/analyses/lucy/nanopore_multiBM_pipeline"
+        input = {
+            'panel_metadata': f"{PREFIX}/config/panel_metadata_inthesis.csv",
+            'post_beta': f"{PREFIX}/results/{SAMPLE}/mod_calling/{SAMPLE}.post_beta.csv"
+            }
+        output = {
+            'epic_probe_results': f"{PREFIX}/results/{SAMPLE}/mod_calling/{SAMPLE}.methatlas.csv",
+            'panel_mod_results': f"{PREFIX}/results/{SAMPLE}/mod_calling/{SAMPLE}.mod_results.csv",
+            'panel_rawmod_results': f"{PREFIX}/results/{SAMPLE}/mod_calling/{SAMPLE}.rawmod_results.csv"
+            }
+        log = [f"{PREFIX}/results_debug/{SAMPLE}.modification_calling.log"]
+
+    snakemake = FakeSnakemake()
+
+
 import json
 import numpy as np
 import pandas as pd
-from snakemake.script import snakemake
-from shared_functions import BIOMARKER_TYPE, CHROMOSOMES, preclin_stage_panel_result_header, variant_prep
+from snakemake.script import snakemake  # type: ignore
+from shared_functions import VARIANT_TYPE, CHROMOSOMES, preclin_stage_panel_result_header, variant_prep, BIOMARKER_NAME, RESULT_OPTIONS, SCORING_TYPE
 
 
 def export_for_methatlas(df):
@@ -295,10 +313,10 @@ def format_results_for_preclin_output(results_df):
         else:
             raise ValueError(f"code not ready for DNA methylation region = {panel_entry['DNA methylation region']} or variant type = {panel_entry[BIOMARKER_TYPE]}")
         
-        if panel_entry[BIOMARKER_TYPE] != 'exp_ratio':
-            bm_classif_panel_df.loc[i] = [panel_id, panel_entry['Biomarker name'], panel_entry['Scoring Type'], biomarker_type, panel_entry['Result Options'], result] 
+        if panel_entry[VARIANT_TYPE] != 'exp_ratio':
+            preclin_panel_df.loc[i] = [panel_id, panel_entry[BIOMARKER_NAME], panel_entry[SCORING_TYPE], biomarker_type, panel_entry[RESULT_OPTIONS], result] 
         
-        bm_classif_panel_rawmod_df.loc[i] = [panel_id, panel_entry['Biomarker name'], panel_entry['Scoring Type'], biomarker_type, panel_entry['Result Options'], result, meth, total] 
+        preclin_panel_rawmod_df.loc[i] = [panel_id, panel_entry[BIOMARKER_NAME], panel_entry[SCORING_TYPE], biomarker_type, panel_entry[RESULT_OPTIONS], result, meth, total] 
         
     return bm_classif_panel_df, bm_classif_panel_rawmod_df
 
@@ -314,7 +332,7 @@ def add_exp_ratio_to_results(bm_classif_panel_df, bm_classif_panel_rawmod_df):
         data_entry = data.loc[panel_id].to_dict()
         
         ratio_name = panel_input_exp_ratio_idxd.loc[panel_id]['Expression Ratio Components']
-        gene_name = panel_input_exp_ratio_idxd.loc[panel_id]['Biomarker name']
+        gene_name = panel_input_exp_ratio_idxd.loc[panel_id][BIOMARKER_NAME]
         region_result = data_entry['Result']
         if ratio_name not in exp_ratio_data.keys():
             exp_ratio_data[ratio_name] = {
@@ -377,7 +395,7 @@ panel_meth_flank_df = add_downstream_start_end(
 
 # ------------------------------------------------ #
 # Compare methylation discovered at those coords to what is expected/useful (from metadata file)
-# meth_threshold = 0.8 (? discuss with Aaron)  
+# meth_threshold = 0.8
 # `pos + 1` should map correctly to the methylated loci
 
 panel_meth_flank_sorted_df, dss_df_sorted = (

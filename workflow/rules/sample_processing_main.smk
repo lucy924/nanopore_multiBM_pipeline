@@ -92,7 +92,7 @@ rule modification_calling:
 rule immune_infiltrate:
     input:
         panel_metadata = "config/panel_metadata.csv",
-        mCS_results = f"results/{PROJECT}/{SAMPLE}/methylCS/CIBERSORTx_{SAMPLE}_Results.csv"
+        mCS_results = f"results/{SAMPLE}/methylCS/CIBERSORTx_{SAMPLE}_Results.txt"
     output:
         immune_results = f"results/{PROJECT}/{SAMPLE}/immune_infiltrate/{SAMPLE}.immune_panel_results.csv"
     log:

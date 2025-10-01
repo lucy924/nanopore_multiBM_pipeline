@@ -12,7 +12,7 @@ if os.getenv("SNAKEMAKE_DEBUG"):
         SAMPLE = "test3"
         PREFIX = "/external/analyses/lucy/nanopore_multiBM_pipeline"
         input = {
-            'panel_metadata': f"{PREFIX}/config/testing_panel_metadata.csv",
+            'panel_metadata': f"{PREFIX}/config/panel_metadata_inthesis.csv",
             'vcf_clinvar_gz': f"{PREFIX}/results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf.gz",
             'vcf_clinvar_gz_tbi': f"{PREFIX}/results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf.gz.tbi",
             'vcf_all': f"{PREFIX}/results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp.vcf.gz",
@@ -27,9 +27,9 @@ if os.getenv("SNAKEMAKE_DEBUG"):
     
 from warnings import warn
 import pandas as pd
-from cyvcf2 import VCF
+from cyvcf2 import VCF  # type: ignore
 # from snakemake.script import snakemake
-from shared_functions import variant_prep, get_location_string, get_annotation_dict, get_annotation_info_dict, add_result, get_snv_by_genomic_location, variant_dict_columns_to_add, BIOMARKER_TYPE,preclin_stage_panel_result_header
+from shared_functions import variant_prep, get_location_string, get_annotation_dict, get_annotation_info_dict, add_result, get_snp_by_genomic_location, variant_dict_columns_to_add, VARIANT_TYPE,preclin_stage_panel_result_header, BIOMARKER_NAME, RESULT_OPTIONS
 
 
 def get_snv_by_RS_number(variants_metadata_df_sub, variant, info_dict, annotation_dict, row_data, entry_found, log, clinvar = False):
@@ -66,7 +66,7 @@ snv_preclin_output = snakemake.output['snv_panel_csv']
 
 log = open(snakemake.log[0], 'w')
 # ------------------------------------------------ #
-variants_metadata_df_snvs = variant_prep(panel_metadata_fp, 'snv')
+variants_metadata_df_snps = variant_prep(panel_metadata_fp, 'snv')
 
 vcf_clinvar = VCF(vcf_clinvar_fp)
 vcf_all = VCF(vcf_all_fp)
@@ -205,7 +205,7 @@ info_df.reset_index(inplace=True)
 merged_df = pd.merge(variants_metadata_df_snvs, info_df, on='ID', how='left')
 
 # Output snv df to csv
-merged_df.to_csv(snv_output, index = False)
+merged_df.to_csv(snp_output, index = False)
 
 # Get bm_classif_panel output
 bm_classif_panel_df = pd.DataFrame(columns=preclin_stage_panel_result_header)
@@ -216,7 +216,7 @@ bm_classif_panel_df = bm_classif_panel_df.astype(str)
 # only_genotypes = merged_df[pd.notna(merged_df['Genotype'])]
 only_genotypes = merged_df[merged_df['Genotype'] != '']
 for i, row in only_genotypes.iterrows():
-    bm_classif_panel_df.loc[i] = [row['ID'], row['Biomarker name'], row['Scoring Type'], row[BIOMARKER_TYPE], row['Result Options'], row['Genotype']]  # type: ignore
+    preclin_panel_df.loc[i] = [row['ID'], row[BIOMARKER_NAME], row['Scoring Type'], row[VARIANT_TYPE], row[RESULT_OPTIONS], row['Genotype']]  # type: ignore
 
 bm_classif_panel_df.to_csv(snv_preclin_output, index = False)
 

@@ -67,10 +67,13 @@ CHROM_LENGTHS = {
     "chrM": 16569
 }
 
-# BIOMARKER_TYPE = "Variant Type (snv, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, immune_inf, microsatellite, demographic, clinicopathology)"
-BIOMARKER_TYPE = "Biomarker Type (snv, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, immune_inf, microsatellite, demographic, clinicopathology)"
+# VARIANT_TYPE = "Variant Type (snp, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, immune_inf, microsatellite, demographic, clinicopathology)"
+VARIANT_TYPE = "Biomarker Type (snv, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, immune_inf, microsatellite, demographic, clinicopathology)"
+BIOMARKER_NAME = "Biomarker name"
+RESULT_OPTIONS = "Result Options"
+SCORING_TYPE = "Scoring Type"
 
-preclin_stage_panel_result_header = ["ID", "Marker name", "Scoring Type", "Biomarker Type", "Result Options", "Result"]
+preclin_stage_panel_result_header = ["ID", BIOMARKER_NAME, SCORING_TYPE, "Biomarker Type", RESULT_OPTIONS, "Result"]
 
 variant_dict_columns_to_add = ['ClinVar', 'Significance (ClinVar)', 'Consequence (Clinvar)', 'Reference Allele', 'Variant Allele', 'Genotype', 'HGVS.c', 'HGVS.p', 'SV Length', 'SV Type']
 
@@ -106,8 +109,7 @@ def reduce_metadata_df(df):
             "Illumina EPIC ID",
             # "DNA methylation",
             "Notes",
-            "WARNINGS",
-            "Ref",
+            "References",
             "length",
         ]
     )

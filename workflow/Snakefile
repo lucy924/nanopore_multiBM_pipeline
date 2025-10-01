@@ -16,7 +16,8 @@ cores = config.get("max_cores", 16)  # Default to 16 if not set
 rule get_input_for_minknow:
     input:
         f"results/{PROJECT}/minknow_input/targets.buffed.bed"
-
+# snakemake --dag get_input_for_minknow | dot -Tsvg > dag.get_input_for_minknow.test7.svg
+# snakemake get_input_for_minknow --use-conda
 
 rule run_sample_panel_for_BM_classifier:
     input:

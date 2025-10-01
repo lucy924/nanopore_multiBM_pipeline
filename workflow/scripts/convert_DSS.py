@@ -7,7 +7,7 @@
 ################################################################################
 
 import pandas as pd
-from snakemake.script import snakemake
+from snakemake.script import snakemake  # type: ignore
 
 # Previous shell code
 # awk -v OFS='\t' 'BEGIN{print "chr","pos","N","X"}{print $1,$2,($12+$13),$13}' ${snakemake_input[0]} > ${snakemake_output[0]}

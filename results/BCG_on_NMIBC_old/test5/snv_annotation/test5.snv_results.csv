@@ -1,0 +1,19 @@
+ID,Marker name,Scoring Type,Biomarker Type,Result Options,Result
+001,ATG2B,genotypic,snv,G|G/G|C/C|C,G|C
+004,NOS3,genotypic,snv,T|T/T|A/T|G/A|A/A|G/G|G,G|G
+005,NOS3,genotypic,snv,C|C/C|T/T|T,T|C
+025,IL1B,genotypic,snv,G|G/G|A/A|A,G|A
+030,IL18R1,genotypic,snv,C|C/C|T/T|T,T|T
+031,IL18R1,genotypic,snv,G|G/G|C/C|C,C|C
+032,IL18R1,genotypic,snv,C|C/C|A/A|A,C|C
+033,IL18R1,genotypic,snv,C|C/C|T/T|T,T|T
+035,IL18R1,genotypic,snv,G|G/G|A/A|A,A|A
+036,IL18R1,genotypic,snv,G|G/G|A/A|A,G|G
+037,IL18R1,genotypic,snv,C|C/C|T/T|T,T|T
+038,IL18R1,genotypic,snv,G|G/G|A/A|A,G|G
+048,XPA,genotypic,snv,G|G/G|A/A|A,C|C
+056,ERCC2,genotypic,snv,G|G/G|A/A|A,T|C
+057,ERCC6,genotypic,snv,G|G/G|A/A|A,C|T
+060,NFKB1,genotypic,snv,,CATTG|C
+061,CASP9,genotypic,snv,G|G/G|A/A|A,T|T
+064,XRCC1,genotypic,snv,G|G/G|A/A|A,C|C

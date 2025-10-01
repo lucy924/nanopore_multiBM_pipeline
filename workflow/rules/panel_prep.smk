@@ -1,8 +1,9 @@
 PROJECT = config['project_name']
+BUFFER = config['buffersize_bp']
 
 rule index_ref:
     input:
-        "resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna",
+        "resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna",  # TODO: make this an input in the config file
     output:
         "resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.fai",
     # conda: 
@@ -23,6 +24,7 @@ rule get_chrom_sizes:
 rule make_panel_bed:
     input:
         panel_csv=config["panel_metadata"],
+        # immune_reference_dataset="resources/test3.CS_bladder_ref.csv",  # this selection is too small for adaptive seq coverage
         immune_reference_dataset="resources/ref_atlas_bladder.csv",
         epic_locs_hg38="resources/IlluminaEPIC_genomic_locations_hg38.csv",
     output:
@@ -42,31 +44,26 @@ rule run_make_adaptive_ref:
         fasta_index="resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.fai",
         chrom_sizes=f"resources/hg38_no_alt.chrom_sizes",
     output:
-        # temp(f"results/output_{config['buffersize_bp']}.txt"),
-        minknow_target_bed=f"results/{PROJECT}/minknow_input_supp/targets.minknow.{config['buffersize_bp']}.bed",
-        minknow_target_fasta=f"results/{PROJECT}/minknow_input_supp/targets.minknow.{config['buffersize_bp']}.fasta",
-        sorted_targets=f"results/{PROJECT}/minknow_input_supp/sorted_all_targets.{config['buffersize_bp']}.bed",
-        ini_targets=f"results/{PROJECT}/minknow_input_supp/ini_all_targets.{config['buffersize_bp']}.bed"
+        # temp(f"results/output_{config['flanking_bp']}.txt"),
+        minknow_target_bed=f"results/{PROJECT}/minknow_input_supp/targets.minknow.{BUFFER}.bed",
+        minknow_target_fasta=f"results/{PROJECT}/minknow_input_supp/targets.minknow.{BUFFER}.fasta",
+        sorted_targets=f"results/{PROJECT}/minknow_input_supp/sorted_all_targets.{BUFFER}.bed",
+        ini_targets=f"results/{PROJECT}/minknow_input_supp/ini_all_targets.{BUFFER}.bed"
     log:
-        f"logs/{PROJECT}/minknow_input_supp/make_adaptive_ref.{config['buffersize_bp']}.log"
-    # conda: 
-    #     "../envs/general.yaml"
+        f"logs/{PROJECT}/minknow_input_supp/make_adaptive_ref.{BUFFER}.log"
     script:
         "../scripts/make_adaptive_ref.sh"
 
 rule check_coverage:
     input:
-        # f"results/output_{config['buffersize_bp']}.txt",
-        minknow_target_bed=f"results/{PROJECT}/minknow_input_supp/targets.minknow.{config['buffersize_bp']}.bed",
+        minknow_target_bed=f"results/{PROJECT}/minknow_input_supp/targets.minknow.{BUFFER}.bed"
     output:
-        # "results/final_output.txt",
         final_bed_name = f"results/{PROJECT}/minknow_input/targets.buffed.bed"
     params:
         min_cov = config["min_genome_coverage"],
-        max_cov = config["max_genome_coverage"]
+        max_cov = config["max_genome_coverage"],
+        buffer = BUFFER
     log:
-        f"logs/{PROJECT}/minknow_input_supp/check_criteria.log"
-    # conda: 
-    #     "../envs/general.yaml"
+        f"logs/{PROJECT}/minknow_input_supp/check_criteria.{BUFFER}.log"  # For some reason this errors
     script:
         "../scripts/calculate_coverage.py"
