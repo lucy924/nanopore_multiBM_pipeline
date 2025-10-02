@@ -9,11 +9,11 @@
 import os
 if os.getenv("SNAKEMAKE_DEBUG"):
     class FakeSnakemake:
-        SAMPLE = "test7debug"
-        PROJECT = "BCG_on_NMIBC"
+        SAMPLE = "test1"
+        PROJECT = "20241002_BCG_on_NMIBC"
         PREFIX = "/external/analyses/lucy/nanopore_multiBM_pipeline"
         input = {
-            'panel_csv': f"{PREFIX}/config/panel_metadata_inthesis.csv",
+            'panel_csv': f"{PREFIX}/config/panel_metadata.csv",
             'immune_reference_dataset': f"{PREFIX}/resources/test3.CS_bladder_ref.csv",
             'epic_locs_hg38': f"{PREFIX}/resources/IlluminaEPIC_genomic_locations_hg38.csv"
             }
@@ -78,8 +78,9 @@ def restructure_to_bed(df):
     """ add empty score column, reorder columns, make positions integers"""
     df['score'] = np.nan
     df = df[['#chrom', 'chromStart', 'chromEnd', 'name', 'score', 'strand']]
-    df = df.astype({'chromStart': 'int'})
-    df = df.astype({'chromEnd': 'int'})
+    df = df.copy()
+    df['chromStart'] = df['chromStart'].round().astype(int)
+    df['chromEnd'] = df['chromEnd'].round().astype(int)
     return df
 
 

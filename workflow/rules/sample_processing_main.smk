@@ -9,10 +9,10 @@ rule run_wf_humvar:
         # sample_bam = os.path.abspath(f"results/{PROJECT}/{SAMPLE}/{SAMPLE}.bam"),
         sample_bam = config['bam_pass_directory'],
         reference = os.path.abspath("resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna"),
-        # targets_bed_file = os.path.abspath(f"results/{PROJECT}/minknow_input/targets.bed"),
-        targets_bed_file = '/home/dejlu879/ProjectProtocol/nanopore_multiBM_pipeline/minknow_input/targets.minknow.bed',
+        targets_bed_file = os.path.abspath(f"results/{PROJECT}/minknow_input/targets.bed"),
+        # targets_bed_file = '/home/dejlu879/ProjectProtocol/nanopore_multiBM_pipeline/minknow_input/targets.minknow.bed',
         tandem_repeat_bed = os.path.abspath("resources/hg38.trf.bed.gz")
-    output:  #TODO: add all necessary outputs
+    output:
         vcf_clinvar = f"results/{PROJECT}/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf",
         vcf_all = f"results/{PROJECT}/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp.vcf.gz",
         vcf_sv_gz = f"results/{PROJECT}/{SAMPLE}/wf-humvar/{SAMPLE}.wf_sv.vcf.gz",
