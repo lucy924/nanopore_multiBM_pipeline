@@ -64,6 +64,6 @@ rule check_coverage:
         max_cov = config["max_genome_coverage"],
         buffer = BUFFER
     log:
-        f"logs/{PROJECT}/minknow_input_supp/check_criteria.{BUFFER}.log"  # For some reason this errors
+        f"logs/{PROJECT}/minknow_input_supp/check_criteria.{BUFFER}.log"
     script:
         "../scripts/calculate_coverage.py"
