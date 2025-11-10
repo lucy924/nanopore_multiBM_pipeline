@@ -88,7 +88,7 @@ def filter_to_variant_type(panel_metadata_df, variant_type):
         raise ValueError("variant_type must be one of: snv, sv, mod, area_mutations, expression, exp_ratio, immune_ratio, microsatellite, demographic, clinicopathology")
     
     panel_metadata_df = panel_metadata_df[
-        (panel_metadata_df[BIOMARKER_TYPE] == variant_type)
+        (panel_metadata_df[VARIANT_TYPE] == variant_type)
     ]
     
     #TODO - for my sanity during development
@@ -109,7 +109,7 @@ def reduce_metadata_df(df):
             "Illumina EPIC ID",
             # "DNA methylation",
             "Notes",
-            "References",
+            "Ref",
             "length",
         ]
     )

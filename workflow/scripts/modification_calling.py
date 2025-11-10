@@ -293,30 +293,30 @@ def format_results_for_preclin_output(results_df):
             result = data['beta'][0]
             total = np.nan
             meth = np.nan
-            biomarker_type = panel_entry[BIOMARKER_TYPE]
+            biomarker_type = panel_entry[VARIANT_TYPE]
             
         elif panel_entry['DNA methylation region'] == 'promoter':
             # calculate promotor region score
             result, meth, total = get_region_methylation(data)
-            biomarker_type = panel_entry[BIOMARKER_TYPE] + ' - promoter region'
+            biomarker_type = panel_entry[VARIANT_TYPE] + ' - promoter region'
             
-        elif panel_entry[BIOMARKER_TYPE] == 'expression':
+        elif panel_entry[VARIANT_TYPE] == 'expression':
             # calculate promotor region score
             result, meth, total = get_region_methylation(data)
-            biomarker_type = panel_entry[BIOMARKER_TYPE]
+            biomarker_type = panel_entry[VARIANT_TYPE]
                     
-        elif panel_entry[BIOMARKER_TYPE] == 'exp_ratio':
+        elif panel_entry[VARIANT_TYPE] == 'exp_ratio':
             # calculate promotor region score
             result, meth, total = get_region_methylation(data)
-            biomarker_type = panel_entry[BIOMARKER_TYPE]
+            biomarker_type = panel_entry[VARIANT_TYPE]
             
         else:
-            raise ValueError(f"code not ready for DNA methylation region = {panel_entry['DNA methylation region']} or variant type = {panel_entry[BIOMARKER_TYPE]}")
+            raise ValueError(f"code not ready for DNA methylation region = {panel_entry['DNA methylation region']} or variant type = {panel_entry[VARIANT_TYPE]}")
         
         if panel_entry[VARIANT_TYPE] != 'exp_ratio':
-            preclin_panel_df.loc[i] = [panel_id, panel_entry[BIOMARKER_NAME], panel_entry[SCORING_TYPE], biomarker_type, panel_entry[RESULT_OPTIONS], result] 
+            bm_classif_panel_df.loc[i] = [panel_id, panel_entry[BIOMARKER_NAME], panel_entry[SCORING_TYPE], biomarker_type, panel_entry[RESULT_OPTIONS], result] 
         
-        preclin_panel_rawmod_df.loc[i] = [panel_id, panel_entry[BIOMARKER_NAME], panel_entry[SCORING_TYPE], biomarker_type, panel_entry[RESULT_OPTIONS], result, meth, total] 
+        bm_classif_panel_rawmod_df.loc[i] = [panel_id, panel_entry[BIOMARKER_NAME], panel_entry[SCORING_TYPE], biomarker_type, panel_entry[RESULT_OPTIONS], result, meth, total] 
         
     return bm_classif_panel_df, bm_classif_panel_rawmod_df
 

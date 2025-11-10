@@ -8,10 +8,12 @@ rule bgzip_clinvar_vcf:
         vcf_clinvar = f"results/{PROJECT}/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf"
     output:
         vcf_clinvar_gz = f"results/{PROJECT}/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf.gz"
+    params:
+        threads = cores/2
     benchmark:
         f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.benchmark.bgzip_clinvar_vcf.tsv"
     shell:
-        "bgzip -k {input}"
+        "bgzip -c -@{params.threads} {input} > {output}"
 
 
 rule tabix_clinvar_vcf_gz:

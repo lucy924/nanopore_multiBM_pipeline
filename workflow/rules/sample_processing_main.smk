@@ -11,7 +11,8 @@ rule run_wf_humvar:
         reference = os.path.abspath("resources/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna"),
         targets_bed_file = os.path.abspath(f"results/{PROJECT}/minknow_input/targets.bed"),
         # targets_bed_file = '/home/dejlu879/ProjectProtocol/nanopore_multiBM_pipeline/minknow_input/targets.minknow.bed',
-        tandem_repeat_bed = os.path.abspath("resources/hg38.trf.bed.gz")
+        tandem_repeat_bed = os.path.abspath("resources/hg38.trf.bed")
+        # tandem_repeat_bed = os.path.abspath("resources/hg38.trf.bed.gz")
     output:
         vcf_clinvar = f"results/{PROJECT}/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf",
         vcf_all = f"results/{PROJECT}/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp.vcf.gz",
@@ -48,9 +49,9 @@ rule snv_annotation:
         snv_csv = f"results/{PROJECT}/{SAMPLE}/snv_annotation/{SAMPLE}.raw_snv_results.csv",
         snv_panel_csv = f"results/{PROJECT}/{SAMPLE}/snv_annotation/{SAMPLE}.snv_results.csv"
     log:
-        f"logs/{SAMPLE}/{SAMPLE}.snv_annotation.log"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.snv_annotation.log"
     benchmark:
-        f"logs/{SAMPLE}/{SAMPLE}.benchmark.snv_annotation.tsv"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.benchmark.snv_annotation.tsv"
     script:
         "../scripts/snv_annotation.py"
 
@@ -65,9 +66,9 @@ rule sv_annotation:
         sv_csv = f"results/{PROJECT}/{SAMPLE}/sv_annotation/{SAMPLE}.raw_sv_results.csv",
         sv_panel_csv = f"results/{PROJECT}/{SAMPLE}/sv_annotation/{SAMPLE}.sv_results.csv"
     log:
-        f"logs/{SAMPLE}/{SAMPLE}.sv_annotation.log"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.sv_annotation.log"
     benchmark:
-        f"logs/{SAMPLE}/{SAMPLE}.benchmark.sv_annotation.tsv"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.benchmark.sv_annotation.tsv"
     script:
         "../scripts/sv_annotation.py"
 
@@ -83,22 +84,22 @@ rule modification_calling:
         panel_mod_results = f"results/{PROJECT}/{SAMPLE}/mod_calling/{SAMPLE}.mod_results.csv",
         panel_rawmod_results = f"results/{PROJECT}/{SAMPLE}/mod_calling/{SAMPLE}.rawmod_results.csv"
     log:
-        f"logs/{SAMPLE}/{SAMPLE}.modification_calling.log"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.modification_calling.log"
     benchmark:
-        f"logs/{SAMPLE}/{SAMPLE}.benchmark.modification_calling.tsv"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.benchmark.modification_calling.tsv"
     script:
         "../scripts/modification_calling.py"
 
 rule immune_infiltrate:
     input:
         panel_metadata = "config/panel_metadata.csv",
-        mCS_results = f"results/{SAMPLE}/methylCS/CIBERSORTx_{SAMPLE}_Results.txt"
+        mCS_results = f"results/{PROJECT}/{SAMPLE}/methylCS/CIBERSORTx_{SAMPLE}_Results.csv"
     output:
         immune_results = f"results/{PROJECT}/{SAMPLE}/immune_infiltrate/{SAMPLE}.immune_panel_results.csv"
     log:
-        f"logs/{SAMPLE}/{SAMPLE}.immune_infiltrate.log"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.immune_infiltrate.log"
     benchmark:
-        f"logs/{SAMPLE}/{SAMPLE}.benchmark.immune_infiltrate.tsv"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.benchmark.immune_infiltrate.tsv"
     script:
         "../scripts/get_immune_infiltrate.mCS.py"
 
@@ -112,9 +113,9 @@ rule collate_results_for_BM_classifier:
     output:
         panel_results = f"results/{PROJECT}/{SAMPLE}.panel_results.csv"
     log:
-        f"logs/{SAMPLE}/{SAMPLE}.collate_results_for_BM_classifier.log"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.collate_results_for_BM_classifier.log"
     benchmark:
-        f"logs/{SAMPLE}/{SAMPLE}.benchmark.collate_results_for_BM_classifier.tsv"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.benchmark.collate_results_for_BM_classifier.tsv"
     script:
         "../scripts/collate_results_for_BM_classifier.py"
 
@@ -128,9 +129,9 @@ rule get_scores:
     output:
         scores = f"results/{PROJECT}/{SAMPLE}/{SAMPLE}.scores.csv"
     log:
-        f"logs/{SAMPLE}/{SAMPLE}.get_scores.log"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.get_scores.log"
     benchmark:
-        f"logs/{SAMPLE}/{SAMPLE}.benchmark.get_scores.tsv"
+        f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.benchmark.get_scores.tsv"
     script:
         "../scripts/get_scores.py"
 
@@ -145,8 +146,8 @@ rule generate_report:
     params:
         sample_name = SAMPLE
     log:
-        f"logs/{SAMPLE}.report.log"
+        f"logs/{PROJECT}/{SAMPLE}.report.log"
     benchmark:
-        f"logs/{SAMPLE}/{SAMPLE}.benchmark.report.tsv"
+        f"logs/{PROJECT}/{SAMPLE}.benchmark.report.tsv"
     script:
         "../scripts/generate_report.py"

@@ -20,7 +20,7 @@ First ensure [Conda](https://anaconda.org/anaconda/conda) and [Docker](https://w
 ```bash
 git clone https://github.com/lucy924/nanopore_multiBM_pipeline.git
 cd https://github.com/lucy924/nanopore_multiBM_pipeline.git
-conda create -n panorama_venv conda=24.7.1 peppy=0.40.7 bioconda::snakemake=8.27.1 nextflow=23.04.4
+conda create -n panorama_venv conda=24.7.1 peppy=0.40.7 bioconda::snakemake=8.27.1 nextflow=23.04.4 bioconda::cyvcf2
 conda config --set channel_priority strict
 conda activate panorama_venv
 nextflow pull epi2me-labs/wf-human-variation -r 2.6.0
@@ -37,7 +37,7 @@ This is a csv file containing metadata for each biomarker. See the [panel descri
 [config/panel_metadata.example.csv](config/panel_metadata.example.csv)  
 
 **Config file**  
-This is a yaml file (a human readable format), that the pipeline requires. This is where you put paramters such as the project name, sample name, name of the panel.csv file, and the path to the output bams from MinKNOW. Everything else can be left as it is, *unless* you need to change certain parameters after running Section 1.  
+This is a yaml file (a human readable format), that the pipeline requires. This is where you put parameters such as the project name, sample name, name of the panel.csv file, and the path to the output bams from MinKNOW. Everything else can be left as it is, *unless* you need to change certain parameters after running Section 1.  
 You may need to adjust `buffersize` to bring your adative sampling file into the range specified by `min_/max_` `genome_coverage`, or you can tweak the coverage numbers if you are confident doing so.
 
 There are two output files from Section 1 for use in MinKNOW.

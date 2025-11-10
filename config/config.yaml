@@ -1,7 +1,7 @@
 project_name: "20241002_BCG_on_NMIBC"
 sample: "test1"
 panel_metadata: "config/panel_metadata.csv"
-bam_pass_directory: "/external/data/lucy/20241107-BiomarkerProject/merged_bams"
+bam_pass_directory: "/mnt/uow-pathology-dun/hans_external/data/lucy/panorama/20241107-BiomarkerProject/merged_bams"
 
 buffersize_bp: 2000
 min_genome_coverage: 0.5
