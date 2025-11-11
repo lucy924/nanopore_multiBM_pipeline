@@ -1,0 +1,13 @@
+ID,Biomarker name,Scoring Type,Biomarker Type,Result Options,Result,Meth (beta >= 0.8),Total
+009,CHST11,continuous,mod - promoter region,0.0-1.0,0.15158996642306932,1535,10126
+010,KLF8,continuous,mod - promoter region,0.0-1.0,0.2706766917293233,324,1197
+011,GPR158,continuous,mod - promoter region,0.0-1.0,0.2960388247639035,2257,7624
+012,C12orf42,continuous,mod - promoter region,0.0-1.0,0.26894279724468406,898,3339
+013,WDR44,continuous,mod - promoter region,0.0-1.0,0.7384740922072623,1810,2451
+014,FLT1,continuous,mod - promoter region,0.0-1.0,0.06665462427745665,369,5536
+017,IL6,continuous,exp_ratio,0.0-10.0,0.5945945945945946,154,259
+018,IL10,continuous,exp_ratio,0.0-10.0,0.24814814814814815,67,270
+019,CA9,continuous,expression,0.0-1.0,0.29858657243816256,169,566
+020,ANG,continuous,expression,0.0-1.0,0.19846350832266324,155,781
+021,MMP10,continuous,expression,0.0-1.0,0.28426395939086296,56,197
+022,PMF1,continuous,mod - promoter region,0.0-1.0,0.7508350033400134,1124,1497

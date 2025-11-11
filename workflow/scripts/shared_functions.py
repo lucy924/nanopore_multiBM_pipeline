@@ -136,6 +136,7 @@ def variant_prep(path2_variants_metadata_csv, variant_type):
 
 
 def get_location_string(row_data):
+    """Add 2bp flanking to start and end pos for vcf searching"""
     chrom = row_data['chrom']
     start = int(row_data['start pos'].replace(",", ""))
     end = int(row_data['end pos'].replace(",", ""))

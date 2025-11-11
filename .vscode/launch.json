@@ -22,7 +22,7 @@
             "args": [],
             "env": {
                 "SNAKEMAKE_DEBUG": "1",
-                "CONDA_PREFIX": "~/.conda/envs/bm_clin_venv"
+                "CONDA_PREFIX": "~/.conda/envs/bm_min_venv"
             }
         }
     ]

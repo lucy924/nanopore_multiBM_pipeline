@@ -9,19 +9,20 @@
 import os
 if os.getenv("SNAKEMAKE_DEBUG"):
     class FakeSnakemake:
-        SAMPLE = "test3"
+        PROJECT_NAME = "20241002_BCG_on_NMIBC"
+        SAMPLE = "test2"
         PREFIX = "/external/analyses/lucy/nanopore_multiBM_pipeline"
         input = {
-            'panel_metadata': f"{PREFIX}/config/panel_metadata_inthesis.csv",
-            'vcf_clinvar_gz': f"{PREFIX}/results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf.gz",
-            'vcf_clinvar_gz_tbi': f"{PREFIX}/results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf.gz.tbi",
-            'vcf_all': f"{PREFIX}/results/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp.vcf.gz",
+            'panel_metadata': f"{PREFIX}/config/panel_metadata.csv",
+            'vcf_clinvar_gz': f"{PREFIX}/results/{PROJECT_NAME}/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf.gz",
+            'vcf_clinvar_gz_tbi': f"{PREFIX}/results/{PROJECT_NAME}/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp_clinvar.vcf.gz.tbi",
+            'vcf_all': f"{PREFIX}/results/{PROJECT_NAME}/{SAMPLE}/wf-humvar/{SAMPLE}.wf_snp.vcf.gz",
             }
         output = {
-            'snv_csv': f"{PREFIX}/results_debug/{SAMPLE}/snv_annotation/{SAMPLE}.raw_snv_results.csv",
-            'snv_panel_csv': f"{PREFIX}/results_debug/{SAMPLE}/snv_annotation/{SAMPLE}.snv_results.csv"
+            'snv_csv': f"{PREFIX}/results_debug/{PROJECT_NAME}/{SAMPLE}/snv_annotation/{SAMPLE}.raw_snv_results.csv",
+            'snv_panel_csv': f"{PREFIX}/results_debug/{PROJECT_NAME}/{SAMPLE}/snv_annotation/{SAMPLE}.snv_results.csv"
             }
-        log = [f"{PREFIX}/results_debug/{SAMPLE}.snv_annotation.log"]
+        log = [f"{PREFIX}/results_debug/{PROJECT_NAME}/{SAMPLE}.snv_annotation.log"]
 
     snakemake = FakeSnakemake()
     
@@ -216,7 +217,7 @@ bm_classif_panel_df = bm_classif_panel_df.astype(str)
 # only_genotypes = merged_df[pd.notna(merged_df['Genotype'])]
 only_genotypes = merged_df[merged_df['Genotype'] != '']
 for i, row in only_genotypes.iterrows():
-    preclin_panel_df.loc[i] = [row['ID'], row[BIOMARKER_NAME], row['Scoring Type'], row[VARIANT_TYPE], row[RESULT_OPTIONS], row['Genotype']]  # type: ignore
+    bm_classif_panel_df.loc[i] = [row['ID'], row[BIOMARKER_NAME], row['Scoring Type'], row[VARIANT_TYPE], row[RESULT_OPTIONS], row['Genotype']]  # type: ignore
 
 bm_classif_panel_df.to_csv(snv_preclin_output, index = False)
 
