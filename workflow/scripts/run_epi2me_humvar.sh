@@ -19,7 +19,31 @@ cd results/${PROJECT}/${SAMPLE}/wf-humvar/
 # mkdir -p results
 # cp "${TARGETS}" results/.
 
-nextflow run epi2me-labs/wf-human-variation \
+# save run command
+cat > "${RESULTS_PATH}/nextflow_run_command.txt" <<EOF
+NXF_VER=24.10.5 nextflow run epi2me-labs/wf-human-variation -r v2.6.0 \
+    --bam "${SAMPLE_BAM}" \
+    --ref "${REFERENCE}" \
+    --bed "${TARGETS}" \
+    --out_dir "." \
+    --sample_name "${SAMPLE}" \
+    --sv \
+    --snp \
+    --mod \
+    --str \
+    --phased \
+    --override_basecaller_cfg "${BASECALLER}" \
+    --output_gene_summary \
+    --output_xam_fmt "bam" \
+    --modkit_args "--preset traditional" \
+    --bam_min_coverage "${BAM_MIN_COV}" \
+    --threads "${THREADS}" \
+    --ubam_map_threads "${THREADS}" \
+    --ubam_sort_threads "${THREADS}" \
+    -profile "${PROFILE}"
+EOF
+
+NXF_VER=24.10.5 nextflow run epi2me-labs/wf-human-variation -r v2.6.0 \
     --bam "${SAMPLE_BAM}" \
     --ref "${REFERENCE}" \
     --bed "${TARGETS}" \
@@ -38,7 +62,6 @@ nextflow run epi2me-labs/wf-human-variation \
     --threads "${THREADS}" \
     --ubam_map_threads "${THREADS}" \
     --ubam_sort_threads "${THREADS}" \
-    --modkit_args "--preset traditional" \
     -profile "${PROFILE}"
 
 # echo "removing file:"

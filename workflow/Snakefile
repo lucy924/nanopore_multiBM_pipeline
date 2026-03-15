@@ -19,9 +19,10 @@ rule get_input_for_minknow:
 # snakemake --dag get_input_for_minknow | dot -Tsvg > dag.get_input_for_minknow.test7.svg
 # snakemake get_input_for_minknow --use-conda
 
+
 rule run_sample_panel_for_BM_classifier:
     input:
-        f"results/{PROJECT}/{SAMPLE}.panel_results.csv"
+        f"results/{PROJECT}/{SAMPLE}/{SAMPLE}.panel_results.csv"
 
 
 rule get_report_for_sample:

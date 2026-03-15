@@ -111,7 +111,7 @@ rule collate_results_for_BM_classifier:
         mod_results = f"results/{PROJECT}/{SAMPLE}/mod_calling/{SAMPLE}.mod_results.csv",
         immune_results = f"results/{PROJECT}/{SAMPLE}/immune_infiltrate/{SAMPLE}.immune_panel_results.csv"
     output:
-        panel_results = f"results/{PROJECT}/{SAMPLE}.panel_results.csv"
+        panel_results = f"results/{PROJECT}/{SAMPLE}/{SAMPLE}.panel_results.csv"
     log:
         f"logs/{PROJECT}/{SAMPLE}/{SAMPLE}.collate_results_for_BM_classifier.log"
     benchmark:

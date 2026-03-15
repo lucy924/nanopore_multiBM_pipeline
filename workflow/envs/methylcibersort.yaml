@@ -1,15 +1,16 @@
 name: mCS_venv
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
   - defaults
+channel_priority: strict
 dependencies:
-  - r-base=3.6.3
-  - r-quadprog
-  - r-matrixstats
-  - r-nmf
-  - r-doparallel
-  - r-glmnet
-  - r-caret
-  - bioconductor-minfi
-  - bioconductor-multtest
+  - bioconductor-minfi=1.32.0=r36_0
+  # - r-base=3.6.3
+  # - r-quadprog=1.5
+  # - r-matrixstats=0.58.0
+  - r-caret=6.0_88=r36hcfec24a_0
+  - r-glmnet=4.1_1=r36h859d828_0
+  - r-doparallel=1.0.16=r36h142f84f_0
+  - r-nmf=0.21.0=r36h0357c0b_1004
+  # - bioconductor-multtest=2.42.0
