@@ -34,3 +34,6 @@ results/test3/mod_calling/test3.pre_beta.csv
 **/work
 results/test4predict/wf-humvar
 resources/hg38.trf.bed
+results/20241002_BCG_on_NMIBC/test3/wf-humvar/test3.flagstat.tsv
+results/20241002_BCG_on_NMIBC/test3/wf-humvar/test3.mosdepth.global.dist.txt
+wf-human-variation_sha2b856c1f358ddf1576217a336bc0e9864b6dc0ed.sif
